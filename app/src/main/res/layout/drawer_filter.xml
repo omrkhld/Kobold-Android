@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="@android:color/white"
+    android:id="@+id/drawer_filter">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by Name"
+        android:id="@+id/sort_name_button"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by CR"
+        android:id="@+id/sort_cr_button"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Group Info"
+        android:id="@+id/group_info_button"/>
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/group_layout"
+        app:ael_expanded="false"
+        app:ael_orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/players_text"
+            android:text="Players:"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/players_text"
+            android:dropDownWidth="100dp"
+            android:entries="@array/num_players_array"
+            android:id="@+id/num_players_spinner" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/num_players_spinner"
+            android:id="@+id/level_text"
+            android:text="Level:"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/num_players_spinner"
+            android:layout_toRightOf="@id/level_text"
+            android:dropDownWidth="100dp"
+            android:entries="@array/level_array"
+            android:id="@+id/level_spinner"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/level_spinner"
+            android:layout_marginTop="10dp"
+            android:id="@+id/exp_layout">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Easy: "
+                    android:textSize="16sp"
+                    android:id="@+id/easy_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medium: "
+                    android:textSize="16sp"
+                    android:id="@+id/med_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hard: "
+                    android:textSize="16sp"
+                    android:id="@+id/hard_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deadly: "
+                    android:textSize="16sp"
+                    android:id="@+id/deadly_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25"
+                    android:textSize="16sp"
+                    android:id="@+id/easy_exp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50"
+                    android:textSize="16sp"
+                    android:id="@+id/med_exp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="75"
+                    android:textSize="16sp"
+                    android:id="@+id/hard_exp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:textSize="16sp"
+                    android:id="@+id/deadly_exp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text=" exp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text=" exp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text=" exp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text=" exp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter"
+        android:id="@+id/filter_button"/>
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/filter_layout"
+        app:ael_expanded="false"
+        app:ael_orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/size_">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Size: "
+                android:textSize="16sp"
+                android:id="@+id/size_text"/>
+
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/size_text"
+                android:entries="@array/size_array"
+                android:id="@+id/size_spinner"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:id="@+id/type_">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type: "
+                android:textSize="16sp"
+                android:id="@+id/type_text"/>
+
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/type_array"
+                android:id="@+id/type_spinner"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/size_"
+            android:text="Alignment: "
+            android:textSize="16sp"
+            android:id="@+id/alignment_text"/>
+
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/size_"
+            android:layout_toRightOf="@id/alignment_text"
+            android:entries="@array/alignment_array"
+            android:id="@+id/alignment_spinner"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alignment_spinner"
+            android:text="Min CR: "
+            android:textSize="16sp"
+            android:id="@+id/cr_text"/>
+
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alignment_spinner"
+            android:layout_toRightOf="@id/cr_text"
+            android:dropDownWidth="100dp"
+            android:entries="@array/cr_array"
+            android:id="@+id/crmin_spinner"/>
+
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alignment_spinner"
+            android:layout_alignParentRight="true"
+            android:dropDownWidth="100dp"
+            android:entries="@array/cr_array"
+            android:id="@+id/crmax_spinner"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alignment_spinner"
+            android:layout_toLeftOf="@id/crmax_spinner"
+            android:text="Max CR: "
+            android:textSize="16sp"
+            android:id="@+id/hyphen_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/crmin_spinner"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Sources:"
+            android:textSize="16sp"
+            android:id="@+id/sources_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sources_text"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monster Manual"
+                    android:id="@+id/mm_checkbox"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lost Mines of Phandelver"
+                    android:id="@+id/lmp_checkbox"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rise of Tiamat"
+                    android:id="@+id/rot_checkbox"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Player Handbook"
+                    android:id="@+id/phb_checkbox"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoard of the Dragon Queen"
+                    android:id="@+id/hdq_checkbox"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Princes of the Apocalypse"
+                    android:id="@+id/poa_checkbox"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+</LinearLayout>

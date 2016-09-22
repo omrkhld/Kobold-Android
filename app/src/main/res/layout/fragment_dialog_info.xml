@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:id="@+id/dialog_info">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorDeadly"
+            android:id="@+id/deadly_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_deadly"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_deadly"
+                android:textSize="16dp"
+                android:id="@+id/deadly_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deadly_bar"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorHard"
+            android:id="@+id/hard_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_hard"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_hard"
+                android:textSize="16sp"
+                android:id="@+id/hard_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hard_bar"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorMed"
+            android:id="@+id/med_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_med"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_med"
+                android:textSize="16sp"
+                android:id="@+id/med_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/med_bar"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorEasy"
+            android:id="@+id/easy_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_easy"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_easy"
+                android:textSize="16sp"
+                android:id="@+id/easy_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/easy_bar"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorPair"
+            android:id="@+id/pair_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_pair"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_hard"
+                android:textSize="16sp"
+                android:id="@+id/pair_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pair_bar"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorGroup"
+            android:id="@+id/group_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_group"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_group"
+                android:textSize="16sp"
+                android:id="@+id/group_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/group_bar"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@color/colorTrivial"
+            android:id="@+id/trivial_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_trivial"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/info_trivial"
+                android:textSize="16sp"
+                android:id="@+id/trivial_desc"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

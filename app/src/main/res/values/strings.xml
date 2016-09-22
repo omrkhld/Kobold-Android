@@ -1,0 +1,152 @@
+<resources>
+    <string name="app_name">KoboldFightClub</string>
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
+
+    <string name="fragment_encbuilder">Encounter Builder</string>
+    <string name="fragment_pcmanager">PC Manager</string>
+    <string name="fragment_encrun">Run Encounter</string>
+
+    <string name="title_deadly">Deadly</string>
+    <string name="title_hard">Hard</string>
+    <string name="title_med">Medium</string>
+    <string name="title_easy">Easy</string>
+    <string name="title_pair">Pair</string>
+    <string name="title_group">Group</string>
+    <string name="title_trivial">Trivial</string>
+
+    <string name="info_deadly">One of these is a deadly challenge</string>
+    <string name="info_hard">One of these is a hard challenge</string>
+    <string name="info_med">One of these is a medium challenge</string>
+    <string name="info_easy">One of these is an easy challenge</string>
+    <string name="info_pair">Two of these is a medium challenge</string>
+    <string name="info_group">Four of these is a medium challenge</string>
+    <string name="info_trivial">Eight or more of these is a medium challenge</string>
+
+    <string-array name="num_players_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="level_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+    <string-array name="size_array">
+        <item>Any</item>
+        <item>Tiny</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>Huge</item>
+        <item>Gargantuan</item>
+    </string-array>
+
+    <string-array name="type_array">
+        <item>All</item>
+        <item>Aberration</item>
+        <item>Beast</item>
+        <item>Celestial</item>
+        <item>Construct</item>
+        <item>Dragon</item>
+        <item>Elemental</item>
+        <item>Fey</item>
+        <item>Fiend</item>
+        <item>Giant</item>
+        <item>Humanoid</item>
+        <item>Monstrosity</item>
+        <item>Ooze</item>
+        <item>Plant</item>
+        <item>Undead</item>
+    </string-array>
+
+    <string-array name="alignment_array">
+        <item>All</item>
+        <item>Any</item>
+        <item>Any Chaotic</item>
+        <item>Any Evil</item>
+        <item>Any Good</item>
+        <item>Any Lawful</item>
+        <item>Any Neutral</item>
+        <item>Chatoic Evil</item>
+        <item>Chaotic Good</item>
+        <item>Chaotic Neutral</item>
+        <item>Lawful Evil</item>
+        <item>Lawful Good</item>
+        <item>Lawful Neutral</item>
+        <item>Neutral</item>
+        <item>Neutral Evil</item>
+        <item>Neutral Good</item>
+        <item>Non-Chaotic</item>
+        <item>Non-Evil</item>
+        <item>Non-Good</item>
+        <item>Non-Lawful</item>
+        <item>Unaligned</item>
+    </string-array>
+
+    <string-array name="cr_array">
+        <item>0</item>
+        <item>1/8</item>
+        <item>1/4</item>
+        <item>1/2</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+    </string-array>
+</resources>
