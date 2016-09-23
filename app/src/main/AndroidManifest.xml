@@ -18,10 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".List.MonsterListActivity"
+            android:label="@string/title_activity_monster_list"
+            android:theme="@style/AppTheme">
 
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="cb6c4e65c36b731224ad03cd104c0b0e756e0409"
-            />
+            android:value="cb6c4e65c36b731224ad03cd104c0b0e756e0409" />
     </application>
+
 </manifest>

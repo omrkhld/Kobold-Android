@@ -1,6 +1,7 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.List;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
-
-import java.util.List;
+import omrkhld.com.koboldfightclub.Monster;
+import omrkhld.com.koboldfightclub.R;
 
 public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRecyclerViewAdapter.ViewHolder> {
     private final Activity activity;
+    private SharedPreferences pclevels;
+    private int numPlayers = 1;
+    private int avgLvl = 1;
 
     public MonsterRecyclerViewAdapter(Activity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
+        pclevels = context.getSharedPreferences(context.getString(R.string.pref_pc_levels), 0);
+        numPlayers = pclevels.getInt("numPlayers", 1);
+        avgLvl = pclevels.getInt("avgLvl", 1);
     }
 
     @Override

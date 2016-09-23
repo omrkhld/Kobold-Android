@@ -1,19 +1,14 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.List;
 
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
+import omrkhld.com.koboldfightclub.R;
 
 /**
  * Created by Omar on 5/8/2016.

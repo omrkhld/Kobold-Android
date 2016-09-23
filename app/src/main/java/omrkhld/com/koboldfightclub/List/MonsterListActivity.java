@@ -1,20 +1,14 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.List;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,50 +19,29 @@ import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import omrkhld.com.koboldfightclub.Monster;
+import omrkhld.com.koboldfightclub.R;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
-public class MonsterListFragment extends Fragment {
+public class MonsterListActivity extends AppCompatActivity {
 
-    public static final String TAG = "MonsterListFragment";
-    private OnListFragmentInteractionListener mListener;
+    public static final String TAG = "MonsterListActivity";
     private Realm realm;
     public RealmResults<Monster> results;
     public String[] conditions = {"", "", "", "0", "30"};
 
     @BindView(R.id.list_view) RecyclerView list;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public MonsterListFragment() {
-    }
-
-    @SuppressWarnings("unused")
-    public static MonsterListFragment newInstance() {
-        MonsterListFragment fragment = new MonsterListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_monster_list, container, false);
-        ButterKnife.bind(this, view);
-        list.addItemDecoration(new DividerItemDecoration(getActivity()));
+        setContentView(R.layout.activity_monster_list);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getString(R.string.fragment_encbuilder));
+        list.addItemDecoration(new DividerItemDecoration(this));
 
         realm = Realm.getDefaultInstance();
         try {
@@ -80,9 +53,7 @@ public class MonsterListFragment extends Fragment {
         results = query.findAllAsync();
 
         // Set the adapter
-        list.setAdapter(new MonsterRecyclerViewAdapter(getActivity(), results));
-
-        return view;
+        list.setAdapter(new MonsterRecyclerViewAdapter(this, results));
     }
 
     @Override
@@ -90,7 +61,7 @@ public class MonsterListFragment extends Fragment {
         super.onResume();
         RealmQuery<Monster> query = realm.where(Monster.class);
         results = query.findAllAsync();
-        list.setAdapter(new MonsterRecyclerViewAdapter(getActivity(), results));
+        list.setAdapter(new MonsterRecyclerViewAdapter(this, results));
         list.getAdapter().notifyDataSetChanged();
     }
 
@@ -101,11 +72,11 @@ public class MonsterListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_monsterlist, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -131,6 +102,7 @@ public class MonsterListFragment extends Fragment {
                 return true;
             }
         });
+        return true;
     }
 
     @Override
@@ -139,8 +111,13 @@ public class MonsterListFragment extends Fragment {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.info:
                 showInfoDialog();
+                return true;
+            case R.id.filter:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -149,7 +126,7 @@ public class MonsterListFragment extends Fragment {
 
     private void loadJsonFromStream() throws IOException {
         realm.beginTransaction();
-        InputStream stream = getActivity().getAssets().open("Monsters.json");
+        InputStream stream = getAssets().open("Monsters.json");
         try {
             realm.createAllFromJson(Monster.class, stream);
             realm.commitTransaction();
@@ -175,45 +152,13 @@ public class MonsterListFragment extends Fragment {
 
     private void updateRecyclerView(RealmQuery<Monster> query) {
         results = buildQuery(query);
-        list.setAdapter(new MonsterRecyclerViewAdapter(getActivity(), results));
+        list.setAdapter(new MonsterRecyclerViewAdapter(this, results));
         list.getAdapter().notifyDataSetChanged();
     }
 
     private void showInfoDialog() {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         InfoDialogFragment infoDialogFragment = InfoDialogFragment.newInstance("Group Info");
         infoDialogFragment.show(fm, "fragment_dialog_info");
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Monster item);
     }
 }

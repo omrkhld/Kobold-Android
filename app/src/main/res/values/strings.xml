@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">KoboldFightClub</string>
+    <string name="app_name">Kobold Fight Club</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
 
-    <string name="fragment_encbuilder">Encounter Builder</string>
-    <string name="fragment_pcmanager">PC Manager</string>
+    <string name="fragment_encbuilder">Bestiary</string>
+    <string name="fragment_pcmanager">Player Manager</string>
+    <string name="fragment_encmanager">Encounter Manager</string>
     <string name="fragment_encrun">Run Encounter</string>
 
     <string name="title_deadly">Deadly</string>
@@ -23,43 +24,7 @@
     <string name="info_group">Four of these is a medium challenge</string>
     <string name="info_trivial">Eight or more of these is a medium challenge</string>
 
-    <string-array name="num_players_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-    </string-array>
-
-    <string-array name="level_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-    </string-array>
+    <string name="pref_pc_levels">kobold.PC_LEVELS</string>
 
     <string-array name="size_array">
         <item>Any</item>
@@ -149,4 +114,5 @@
         <item>29</item>
         <item>30</item>
     </string-array>
+    <string name="title_activity_monster_list">MonsterListActivity</string>
 </resources>
