@@ -1,6 +1,5 @@
 package omrkhld.com.koboldfightclub.Manager;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +11,11 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+import omrkhld.com.koboldfightclub.Player;
 import omrkhld.com.koboldfightclub.R;
 
 /**
@@ -23,7 +27,11 @@ public class PCManagerFragment extends Fragment {
     @BindView(R.id.pc_recyclerview) RecyclerView list;
     @BindView(R.id.pc_fab) FloatingActionButton fab;
 
-    SharedPreferences pclevels;
+    public SharedPreferences xpThresholds;
+    public RealmConfiguration playersConfig;
+    public Realm playersRealm;
+    public RealmResults<Player> results;
+    public String selectedParty;
 
     public static PCManagerFragment newInstance() {
         PCManagerFragment fragment = new PCManagerFragment();
@@ -33,8 +41,14 @@ public class PCManagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        pclevels = getActivity().getSharedPreferences(getString(R.string.pref_pc_levels), 0);
+        xpThresholds = getActivity().getSharedPreferences(getString(R.string.pref_party_threshold), 0);
+        playersConfig = new RealmConfiguration.Builder(this.getContext())
+                .name(getString(R.string.players_realm))
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        playersRealm = Realm.getInstance(playersConfig);
+        RealmQuery<Player> query = playersRealm.where(Player.class);
+        results = query.findAllAsync();
     }
 
     @Override
@@ -47,6 +61,35 @@ public class PCManagerFragment extends Fragment {
             public void onClick(View v) {
             }
         });
+
+        // Set the adapter
+        list.setAdapter(new PCRecyclerViewAdapter(this.getActivity(), results));
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        int easy = 0, med = 0, hard = 0, deadly = 0;
+        RealmResults<Player> selected = playersRealm.where(Player.class).equalTo("party", selectedParty).findAll();
+        if (selectedParty.isEmpty()) {
+            easy = 25; med = 50; hard = 75; deadly = 100;
+        } else {
+            for (int i = 0; i < selected.size(); i++) {
+                easy += selected.get(i).getEasy();
+                med += selected.get(i).getMed();
+                hard += selected.get(i).getHard();
+                deadly += selected.get(i).getDeadly();
+            }
+        }
+
+        SharedPreferences.Editor editor = xpThresholds.edit();
+        editor.putInt("easy", easy);
+        editor.putInt("med", med);
+        editor.putInt("hard", hard);
+        editor.putInt("deadly", deadly);
+        editor.apply();
+
+        playersRealm.close();
     }
 }

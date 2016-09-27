@@ -9,7 +9,7 @@ public class Monster extends RealmObject {
     private String name;
     private float cr;
     private String size, type, tag, alignment;
-    private int ac, hp, num, hd, add, init;
+    private int ac, hp, num, hd, add, init, exp;
 
     public Monster() {
         name = "";
@@ -24,6 +24,7 @@ public class Monster extends RealmObject {
         hd = 0;
         add = 0;
         init = 0;
+        exp = 0;
     }
 
     public String getName() { return name; }
@@ -38,6 +39,7 @@ public class Monster extends RealmObject {
     public int getHD() { return hd; }
     public int getAdd() { return add; }
     public int getInit() { return init; }
+    public int getExp() { return exp; }
 
     public void setName(String n) { name = n; }
     public void setSize(String s) { size = s; }
@@ -51,4 +53,5 @@ public class Monster extends RealmObject {
     public void setHD(int h) { hd = h; }
     public void setAdd(int a) { add = a; }
     public void setInit(int i) { init = i; }
+    public void setExp(int e) { exp = e; }
 }

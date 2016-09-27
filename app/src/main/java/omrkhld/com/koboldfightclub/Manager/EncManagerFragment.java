@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import omrkhld.com.koboldfightclub.List.MonsterListActivity;
+import omrkhld.com.koboldfightclub.MonsterList.MonsterListActivity;
 import omrkhld.com.koboldfightclub.R;
 
 /**

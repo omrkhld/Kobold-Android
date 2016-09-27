@@ -1,11 +1,15 @@
-package omrkhld.com.koboldfightclub.List;
+package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -16,17 +20,20 @@ import omrkhld.com.koboldfightclub.Monster;
 import omrkhld.com.koboldfightclub.R;
 
 public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRecyclerViewAdapter.ViewHolder> {
+
+    public static final String TAG = "MonsterAdapter";
     private final Activity activity;
-    private SharedPreferences pclevels;
-    private int numPlayers = 1;
-    private int avgLvl = 1;
+    private SharedPreferences xpThresholds;
+    public int easy, med, hard, deadly;
 
     public MonsterRecyclerViewAdapter(Activity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
-        pclevels = context.getSharedPreferences(context.getString(R.string.pref_pc_levels), 0);
-        numPlayers = pclevels.getInt("numPlayers", 1);
-        avgLvl = pclevels.getInt("avgLvl", 1);
+        xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
+        easy = xpThresholds.getInt("easy", 25);
+        med = xpThresholds.getInt("med", 50);
+        hard = xpThresholds.getInt("hard", 75);
+        deadly = xpThresholds.getInt("deadly", 100);
     }
 
     @Override
@@ -52,6 +59,23 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
             crText = String.format("%d", (int) cr);
         }
         holder.cr.setText(crText);
+
+        GradientDrawable bgCircle = (GradientDrawable) holder.difficulty.getDrawable();
+        if (obj.getExp() >= deadly) {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorDeadly));
+        } else if (obj.getExp() >= hard) {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorHard));
+        } else if (obj.getExp() >= med) {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorMed));
+        } else if (obj.getExp() >= easy) {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorEasy));
+        } else if ((obj.getExp()*3) >= med) {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
+        } else if ((obj.getExp()*8) >= med) {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
+        } else {
+            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +84,7 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
 
         @BindView(R.id.monster_name) TextView name;
         @BindView(R.id.monster_cr) TextView cr;
+        @BindView(R.id.monster_difficulty) ImageView difficulty;
 
         public ViewHolder(View view) {
             super(view);

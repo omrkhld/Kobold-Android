@@ -24,7 +24,9 @@
     <string name="info_group">Four of these is a medium challenge</string>
     <string name="info_trivial">Eight or more of these is a medium challenge</string>
 
-    <string name="pref_pc_levels">kobold.PC_LEVELS</string>
+    <string name="monsters_realm">monsters.realm</string>
+    <string name="players_realm">players.realm</string>
+    <string name="pref_party_threshold">kobold.PARTY_THRESHOLD</string>
 
     <string-array name="size_array">
         <item>Any</item>

@@ -13,9 +13,14 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import omrkhld.com.koboldfightclub.Manager.ManPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.view_pager) ViewPager pager;
     @BindView(R.id.tab_layout) TabLayout tabs;
-    FragmentPagerAdapter adapter;
+    public FragmentPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

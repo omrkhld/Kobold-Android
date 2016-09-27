@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub.List;
+package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

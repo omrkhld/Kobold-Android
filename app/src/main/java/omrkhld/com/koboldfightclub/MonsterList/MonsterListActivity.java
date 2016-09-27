@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub.List;
+package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -10,13 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import omrkhld.com.koboldfightclub.Monster;
@@ -25,7 +23,8 @@ import omrkhld.com.koboldfightclub.R;
 public class MonsterListActivity extends AppCompatActivity {
 
     public static final String TAG = "MonsterListActivity";
-    private Realm realm;
+    private RealmConfiguration monstersConfig;
+    private Realm monstersRealm;
     public RealmResults<Monster> results;
     public String[] conditions = {"", "", "", "0", "30"};
 
@@ -43,13 +42,13 @@ public class MonsterListActivity extends AppCompatActivity {
         setTitle(getString(R.string.fragment_encbuilder));
         list.addItemDecoration(new DividerItemDecoration(this));
 
-        realm = Realm.getDefaultInstance();
-        try {
-            loadJsonFromStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        RealmQuery<Monster> query = realm.where(Monster.class);
+        monstersConfig = new RealmConfiguration.Builder(this)
+                .name(getString(R.string.monsters_realm))
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        monstersRealm = Realm.getInstance(monstersConfig);
+
+        RealmQuery<Monster> query = monstersRealm.where(Monster.class);
         results = query.findAllAsync();
 
         // Set the adapter
@@ -59,7 +58,7 @@ public class MonsterListActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        RealmQuery<Monster> query = realm.where(Monster.class);
+        RealmQuery<Monster> query = monstersRealm.where(Monster.class);
         results = query.findAllAsync();
         list.setAdapter(new MonsterRecyclerViewAdapter(this, results));
         list.getAdapter().notifyDataSetChanged();
@@ -67,7 +66,7 @@ public class MonsterListActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        realm.close();
+        monstersRealm.close();
         super.onDestroy();
     }
 
@@ -88,7 +87,7 @@ public class MonsterListActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                RealmQuery<Monster> query = realm.where(Monster.class);
+                RealmQuery<Monster> query = monstersRealm.where(Monster.class);
                 try {
                     query.equalTo("cr", Float.parseFloat(newText));
                 } catch(NumberFormatException e) {
@@ -121,22 +120,6 @@ public class MonsterListActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void loadJsonFromStream() throws IOException {
-        realm.beginTransaction();
-        InputStream stream = getAssets().open("Monsters.json");
-        try {
-            realm.createAllFromJson(Monster.class, stream);
-            realm.commitTransaction();
-        } catch (IOException e) {
-            realm.cancelTransaction();
-            e.printStackTrace();
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
         }
     }
 
