@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,12 +60,26 @@ public class PCManagerFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                AddPlayerDialogFragment dialog = AddPlayerDialogFragment.newInstance("Add Player");
+                dialog.show(fm, "fragment_dialog_add_player");
             }
         });
 
         // Set the adapter
         list.setAdapter(new PCRecyclerViewAdapter(this.getActivity(), results));
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RealmQuery<Player> query = playersRealm.where(Player.class);
+        results = query.findAllAsync();
+        list.setAdapter(new PCRecyclerViewAdapter(getActivity(), results));
+        list.getAdapter().notifyDataSetChanged();
+        //Check if this is called when dialogfragment is closed
+        //Update RecyclerViewAdapter to show new party/new player
     }
 
     @Override

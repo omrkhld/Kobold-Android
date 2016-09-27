@@ -27,6 +27,7 @@
     <string name="monsters_realm">monsters.realm</string>
     <string name="players_realm">players.realm</string>
     <string name="pref_party_threshold">kobold.PARTY_THRESHOLD</string>
+    <string name="pref_party_names">kobold.PARTY_NAMES</string>
 
     <string-array name="size_array">
         <item>Any</item>
