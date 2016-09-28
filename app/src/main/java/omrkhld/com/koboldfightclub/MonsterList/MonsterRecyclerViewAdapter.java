@@ -62,21 +62,41 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
         }
         holder.cr.setText(crText);
 
+        double tempExp = obj.getExp();
+
         GradientDrawable bgCircle = (GradientDrawable) holder.difficulty.getDrawable();
-        if (obj.getExp() >= deadly) {
+        if (tempExp >= deadly) {
             bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorDeadly));
-        } else if (obj.getExp() >= hard) {
+        } else if (tempExp >= hard) {
             bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorHard));
-        } else if (obj.getExp() >= med) {
+        } else if (tempExp >= med) {
             bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorMed));
-        } else if (obj.getExp() >= easy) {
+        } else if (tempExp >= easy) {
             bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorEasy));
-        } else if ((obj.getExp()*3) >= med) {
-            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
-        } else if ((obj.getExp()*8) >= med) {
-            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
+        } else if (numPlayers < 3) {
+            if (tempExp*2*2 >= med) {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
+            } else if (tempExp*4*2.5 >= med) {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
+            } else {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
+            }
+        } else if (numPlayers > 6) {
+            if (tempExp*2 >= med) {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
+            } else if (tempExp*4*1.5 >= med) {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
+            } else {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
+            }
         } else {
-            bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
+            if (tempExp*2*1.5 >= med) {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
+            } else if (tempExp*4*2 >= med) {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
+            } else {
+                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
+            }
         }
     }
 

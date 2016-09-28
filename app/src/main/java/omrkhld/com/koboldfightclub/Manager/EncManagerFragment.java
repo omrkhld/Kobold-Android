@@ -19,7 +19,7 @@ import omrkhld.com.koboldfightclub.R;
 public class EncManagerFragment extends android.support.v4.app.Fragment {
 
     public static final String TAG = "EncManagerFragment";
-    @BindView(R.id.enc_recyclerview) RecyclerView list;
+    @BindView(R.id.list) RecyclerView list;
     @BindView(R.id.enc_fab) FloatingActionButton fab;
 
     public static EncManagerFragment newInstance() {

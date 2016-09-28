@@ -23,7 +23,7 @@
         android:layout_below="@id/party_text"
         android:padding="8dp"
         android:orientation="horizontal"
-        android:id="@+id/texts">
+        android:id="@+id/headers">
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="0.1"
+            android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:text="Level"
@@ -46,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="0.1"
+            android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:text="HP"
@@ -55,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="0.1"
+            android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:text="Init"
@@ -65,13 +68,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_below="@id/texts"
+        android:layout_below="@id/headers"
         android:src="@drawable/list_divider"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/texts"
+        android:layout_below="@id/headers"
         android:id="@+id/player_recycler_view"
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
