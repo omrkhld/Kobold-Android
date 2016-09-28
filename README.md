@@ -1,5 +1,6 @@
 # Kobold Fight Club for Android
 [Kobold Fight Club](http://kobold.club) is an Encounter builder and manager for the popular tabletop RPG, Dungeons & Dragons. It is primarily used by Dungeon Masters as a tool to facilitate smoother and more balanced combat.
+
 With the permission of its developer, [Ian Toltz](https://github.com/Asmor), this project is the Android app for Kobold Fight Club. The app supports devices running Android 4.4+, and is optimized for phones of all shapes and sizes.
 
 ## Source
