@@ -26,12 +26,13 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
     public static final String TAG = "MonsterAdapter";
     private final AppCompatActivity activity;
     private SharedPreferences xpThresholds;
-    public int easy, med, hard, deadly;
+    public int numPlayers, easy, med, hard, deadly;
 
     public MonsterRecyclerViewAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
         xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
+        numPlayers = xpThresholds.getInt("numPlayers", 1);
         easy = xpThresholds.getInt("easy", 25);
         med = xpThresholds.getInt("med", 50);
         hard = xpThresholds.getInt("hard", 75);

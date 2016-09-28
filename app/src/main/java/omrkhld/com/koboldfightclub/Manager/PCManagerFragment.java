@@ -30,7 +30,7 @@ import omrkhld.com.koboldfightclub.R;
 public class PCManagerFragment extends Fragment implements AddPlayerDialogFragment.AddPlayerDialogListener {
 
     public static final String TAG = "PCManagerFragment";
-    @BindView(R.id.pc_recyclerview) RecyclerView list;
+    @BindView(R.id.player_recycler_view) RecyclerView list;
     @BindView(R.id.pc_fab) FloatingActionButton fab;
 
     public SharedPreferences xpThresholds;
@@ -123,34 +123,35 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     @Override
     public void onDestroy() {
         super.onDestroy();
-        int easy = 0, med = 0, hard = 0, deadly = 0;
-        RealmResults<Player> selected = playersRealm.where(Player.class).equalTo("party", selectedParty).findAll();
-        if (selectedParty.isEmpty()) {
+        playersRealm.close();
+    }
+
+    public void updateList() {
+        int numPlayers = 1, easy = 0, med = 0, hard = 0, deadly = 0;
+        RealmQuery<Player> query = playersRealm.where(Player.class);
+        results = query.findAll();
+        list.setAdapter(new PCRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
+        list.getAdapter().notifyDataSetChanged();
+
+        if (results.isEmpty()) {
             easy = 25; med = 50; hard = 75; deadly = 100;
         } else {
-            for (int i = 0; i < selected.size(); i++) {
-                easy += selected.get(i).getEasy();
-                med += selected.get(i).getMed();
-                hard += selected.get(i).getHard();
-                deadly += selected.get(i).getDeadly();
+            numPlayers = results.size();
+            for (int i = 0; i < numPlayers; i++) {
+                easy += results.get(i).getEasy();
+                med += results.get(i).getMed();
+                hard += results.get(i).getHard();
+                deadly += results.get(i).getDeadly();
             }
         }
 
         SharedPreferences.Editor editor = xpThresholds.edit();
+        editor.putInt("numPlayers", numPlayers);
         editor.putInt("easy", easy);
         editor.putInt("med", med);
         editor.putInt("hard", hard);
         editor.putInt("deadly", deadly);
         editor.apply();
-
-        playersRealm.close();
-    }
-
-    public void updateList() {
-        RealmQuery<Player> query = playersRealm.where(Player.class);
-        results = query.findAll();
-        list.setAdapter(new PCRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
-        list.getAdapter().notifyDataSetChanged();
     }
 
     @Override
