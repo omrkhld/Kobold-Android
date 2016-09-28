@@ -1,7 +1,10 @@
 package omrkhld.com.koboldfightclub.Manager;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +22,10 @@ import omrkhld.com.koboldfightclub.R;
  */
 
 public class PCRecyclerViewAdapter extends RealmRecyclerViewAdapter<Player, PCRecyclerViewAdapter.ViewHolder> {
-    private final Activity activity;
+    private final String TAG = "PCAdapter";
+    private final AppCompatActivity activity;
 
-    public PCRecyclerViewAdapter(Activity activity, OrderedRealmCollection<Player> data) {
+    public PCRecyclerViewAdapter(AppCompatActivity activity, OrderedRealmCollection<Player> data) {
         super(activity, data, true);
         this.activity = activity;
     }
@@ -34,20 +38,39 @@ public class PCRecyclerViewAdapter extends RealmRecyclerViewAdapter<Player, PCRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = getData().get(position);
-        Player obj = getData().get(position);
+        final Player player = getData().get(position);
+        holder.name.setText(player.getName());
+        holder.lvl.setText(Integer.toString(player.getLevel()));
+        holder.hp.setText(Integer.toString(player.getHP()));
+        holder.init.setText(Integer.toString(player.getInitMod()));
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = activity.getSupportFragmentManager();
+                AddPlayerDialogFragment dialog = AddPlayerDialogFragment.newInstance("Add Player", player);
+                dialog.setTargetFragment(fm.findFragmentById(R.id.view_pager), 300);
+                dialog.show(fm, "fragment_dialog_add_player");
+            }
+        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public Player mItem;
 
         @BindView(R.id.player_name) TextView name;
+        @BindView(R.id.player_lvl) TextView lvl;
+        @BindView(R.id.player_hp) TextView hp;
+        @BindView(R.id.player_init) TextView init;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return getData().size();
     }
 }

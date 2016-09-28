@@ -1,41 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    xmlns:card="http://schemas.android.com/tools"
-    card:cardElevation="5dp"
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp"
     android:id="@+id/monster_item">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:textColor="@android:color/black"
+        android:text="Name"
+        android:textSize="16dp"
+        android:id="@+id/monster_name"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginLeft="8dp"
-            android:textColor="@android:color/black"
-            android:text="Name"
-            android:textSize="16dp"
-            android:id="@+id/monster_name"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@android:color/black"
+        android:text="CR"
+        android:textSize="16dp"
+        android:id="@+id/monster_cr"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="@android:color/black"
-            android:text="CR"
-            android:textSize="16dp"
-            android:id="@+id/monster_cr"/>
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/circle"
-            android:id="@+id/monster_difficulty"/>
-    </LinearLayout>
-</RelativeLayout>
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/circle"
+        android:id="@+id/monster_difficulty"/>
+</LinearLayout>

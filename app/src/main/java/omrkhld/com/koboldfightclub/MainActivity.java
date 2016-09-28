@@ -13,14 +13,9 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import omrkhld.com.koboldfightclub.Manager.ManPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,11 +1,11 @@
 package omrkhld.com.koboldfightclub.MonsterList;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +16,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
+import omrkhld.com.koboldfightclub.Manager.AddPlayerDialogFragment;
+import omrkhld.com.koboldfightclub.Manager.PCManagerFragment;
 import omrkhld.com.koboldfightclub.Monster;
 import omrkhld.com.koboldfightclub.R;
 
 public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRecyclerViewAdapter.ViewHolder> {
 
     public static final String TAG = "MonsterAdapter";
-    private final Activity activity;
+    private final AppCompatActivity activity;
     private SharedPreferences xpThresholds;
     public int easy, med, hard, deadly;
 
-    public MonsterRecyclerViewAdapter(Activity activity, OrderedRealmCollection<Monster> data) {
+    public MonsterRecyclerViewAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
         xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
@@ -44,7 +46,6 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = getData().get(position);
         Monster obj = getData().get(position);
         holder.name.setText(obj.getName());
         float cr = obj.getCR();
@@ -80,7 +81,6 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public Monster mItem;
 
         @BindView(R.id.monster_name) TextView name;
         @BindView(R.id.monster_cr) TextView cr;

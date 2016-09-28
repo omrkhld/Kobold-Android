@@ -33,6 +33,7 @@ public class InfoDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_info, container);
         ButterKnife.bind(this, view);
+        getDialog().setTitle("Difficulty Info");
         return view;
     }
 

@@ -36,36 +36,42 @@ public class AddPlayerDialogFragment extends DialogFragment {
 
     public static final String TAG = "AddPlayerDialogFragment";
 
-    @BindView(R.id.add_spinner) Spinner addSpinner;
     @BindView(R.id.name_wrapper) TextInputLayout nameWrapper;
     @BindView(R.id.name_edit) EditText nameEdit;
-    @BindView(R.id.party_spinner) Spinner partySpinner;
     @BindView(R.id.level_wrapper) TextInputLayout levelWrapper;
     @BindView(R.id.level_edit) EditText levelEdit;
     @BindView(R.id.init_wrapper) TextInputLayout initWrapper;
     @BindView(R.id.init_edit) EditText initEdit;
     @BindView(R.id.hp_wrapper) TextInputLayout hpWrapper;
     @BindView(R.id.hp_edit) EditText hpEdit;
-    @BindView(R.id.add_player_layout) LinearLayout layout;
-    @BindView(R.id.create_party) Button createPartyButton;
     @BindView(R.id.create_player) Button createPlayerButton;
 
-    public SharedPreferences partyNames;
-    public Set<String> partiesSet;
-    public ArrayList<String> parties;
-    public ArrayAdapter<String> partyAdapter;
     public String name, levelString, initString, hpString;
     public int level = 1, init = 0, hp = 1;
+    public static Player p;
 
     public AddPlayerDialogFragment() {
     }
 
-    public static AddPlayerDialogFragment newInstance(String title) {
+    public static AddPlayerDialogFragment newInstance(String title, Player pOld) {
         AddPlayerDialogFragment frag = new AddPlayerDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
+
+        if (pOld != null) {
+            p = pOld;
+        } else {
+            p = null;
+        }
         return frag;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth);
     }
 
     @Override
@@ -79,7 +85,7 @@ public class AddPlayerDialogFragment extends DialogFragment {
         categories.add("New Player");
         ArrayAdapter<String> addAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
         addAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        addSpinner.setAdapter(addAdapter);
+        /*addSpinner.setAdapter(addAdapter);
         addSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -95,9 +101,9 @@ public class AddPlayerDialogFragment extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });
+        });*/
 
-        createPartyButton.setOnClickListener(new View.OnClickListener() {
+        /*createPartyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 name = nameWrapper.getEditText().getText().toString();
@@ -113,28 +119,31 @@ public class AddPlayerDialogFragment extends DialogFragment {
         }
         parties.addAll(partiesSet);
         partyAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, parties);
-        partySpinner.setAdapter(partyAdapter);
+        partySpinner.setAdapter(partyAdapter);*/
 
         createPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     levelString = levelWrapper.getEditText().getText().toString();
-                    level = Integer.parseInt(levelString);
+                    if (TextUtils.isEmpty(levelString)) {
+                        levelWrapper.setError("Level is empty!");
+                    } else level = Integer.parseInt(levelString);
+
                     initString = initWrapper.getEditText().getText().toString();
-                    init = Integer.parseInt(initString);
+                    if (TextUtils.isEmpty(initString)) {
+                        initWrapper.setError("Init Modifier is empty!");
+                    } else init = Integer.parseInt(initString);
+
                     hpString = hpWrapper.getEditText().getText().toString();
-                    hp = Integer.parseInt(hpString);
+                    if (TextUtils.isEmpty(hpString)) {
+                        hpWrapper.setError("HP is empty!");
+                    } else hp = Integer.parseInt(hpString);
+
                     name = nameWrapper.getEditText().getText().toString();
 
                     if (TextUtils.isEmpty(name)) {
                         nameWrapper.setError("Name is empty!");
-                    } else if (TextUtils.isEmpty(levelString)) {
-                        levelWrapper.setError("Level is empty!");
-                    } else if (TextUtils.isEmpty(initString)) {
-                        initWrapper.setError("Init Modifier is empty!");
-                    } else if (TextUtils.isEmpty(hpString)) {
-                        hpWrapper.setError("HP is empty!");
                     } else if (!TextUtils.isDigitsOnly(levelString)) {
                         levelWrapper.setError("Not a number!");
                     } else if (level > 20) {
@@ -145,26 +154,22 @@ public class AddPlayerDialogFragment extends DialogFragment {
                         initWrapper.setError("Not a number!");
                     } else if (!TextUtils.isDigitsOnly(hpString)) {
                         hpWrapper.setError("Not a number!");
+                    } else if (hp < 1) {
+                        hpWrapper.setError("HP too low!");
                     } else {
                         Player player = new Player();
                         player.setName(name);
                         player.setInitMod(init);
                         player.setLevel(level);
                         player.setHP(hp);
-                        player.setParty(partySpinner.getSelectedItem().toString());
+                        //player.setParty(partySpinner.getSelectedItem().toString());
                         ArrayList<ArrayList<Integer>> thresh = XPThresholds.getInstance().getThresholds();
                         ArrayList<Integer> row = thresh.get(level-1);
-                        player.setEasy(row.get(1));
-                        player.setMed(row.get(2));
-                        player.setHard(row.get(3));
-                        player.setDeadly(row.get(4));
-                        RealmConfiguration playersConfig = new RealmConfiguration.Builder(getContext())
-                                .name(getString(R.string.players_realm))
-                                .deleteRealmIfMigrationNeeded()
-                                .build();
-                        Realm playersRealm = Realm.getInstance(playersConfig);
-                        playersRealm.copyToRealm(player);
-                        dismiss();
+                        player.setEasy(row.get(0));
+                        player.setMed(row.get(1));
+                        player.setHard(row.get(2));
+                        player.setDeadly(row.get(3));
+                        sendBackResult(player);
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -181,13 +186,41 @@ public class AddPlayerDialogFragment extends DialogFragment {
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Add Player");
         getDialog().setTitle(title);
+
+        if (p != null) {
+            nameWrapper.getEditText().setText(p.getName());
+            levelWrapper.getEditText().setText(Integer.toString(p.getLevel()));
+            hpWrapper.getEditText().setText(Integer.toString(p.getHP()));
+            initWrapper.getEditText().setText(Integer.toString(p.getInitMod()));
+
+            createPlayerButton.setText("Edit");
+        } else {
+            nameWrapper.getEditText().setText("");
+            levelWrapper.getEditText().setText("");
+            hpWrapper.getEditText().setText("");
+            initWrapper.getEditText().setText("");
+
+            createPlayerButton.setText("Create");
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        SharedPreferences.Editor editor = partyNames.edit();
+        /*SharedPreferences.Editor editor = partyNames.edit();
         editor.putStringSet("names", partiesSet);
-        editor.apply();
+        editor.apply();*/
+    }
+
+    public interface AddPlayerDialogListener {
+        void onFinishAddDialog(Player player);
+    }
+
+    // Call this method to send the data back to the parent fragment
+    public void sendBackResult(Player player) {
+        // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
+        AddPlayerDialogListener listener = (AddPlayerDialogListener) getTargetFragment();
+        listener.onFinishAddDialog(player);
+        dismiss();
     }
 }

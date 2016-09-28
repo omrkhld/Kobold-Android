@@ -1,19 +1,25 @@
 package omrkhld.com.koboldfightclub;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by Omar on 27/9/2016.
  */
 
 public class Player extends RealmObject {
-    private String name, party;
+
+    @PrimaryKey @Required
+    private String name;
+
+    private String party;
     private int level, easy, med, hard, deadly;
     private int initMod, hp;
 
     public Player() {
         name = "";
-        party = "";
+        party = "Party";
         level = 1;
         easy = 25;
         med = 50;
@@ -21,6 +27,18 @@ public class Player extends RealmObject {
         deadly = 100;
         initMod = 0;
         hp = 1;
+    }
+
+    public Player(Player p) {
+        name = p.getName();
+        party = p.getParty();
+        level = p.getLevel();
+        easy = p.getEasy();
+        med = p.getMed();
+        hard = p.getHard();
+        deadly = p.getDeadly();
+        initMod = p.getInitMod();
+        hp = p.getHP();
     }
 
     public String getName() { return name; }

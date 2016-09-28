@@ -17,6 +17,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import omrkhld.com.koboldfightclub.DividerItemDecoration;
 import omrkhld.com.koboldfightclub.Monster;
 import omrkhld.com.koboldfightclub.R;
 

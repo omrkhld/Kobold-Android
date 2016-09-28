@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:id="@+id/linear_layout">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:text="Name"
+                android:id="@+id/player_name"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="Level"
+            android:id="@+id/player_lvl"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="HP"
+            android:id="@+id/player_hp"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="Init"
+            android:id="@+id/player_init"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/player_name"/>
-</LinearLayout>
+        android:layout_below="@id/linear_layout"
+        android:src="@drawable/list_divider"/>
+</RelativeLayout>
