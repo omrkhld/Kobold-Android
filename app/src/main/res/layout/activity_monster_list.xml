@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
+        android:layout_marginEnd="8dp"
         android:padding="8dp"
         android:orientation="horizontal"
         android:id="@+id/headers">
@@ -56,4 +57,46 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/fragment_monster">
     </android.support.v7.widget.RecyclerView>
+
+    <omrkhld.com.koboldfightclub.RecyclerViewFastScroller
+        android:id="@+id/fast_scroller"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headers"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="56dp"
+            android:minHeight="56dp"
+            android:gravity="center"
+            android:background="@drawable/fast_scroller_bubble"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:text="A" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="center">
+
+            <View
+                android:id="@+id/scroll_bar"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorTrivial"
+                android:layout_gravity="center" />
+
+            <android.support.v7.widget.AppCompatImageView
+                xmlns:appCompat="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/handle"
+                android:layout_width="8dp"
+                android:layout_height="40dp"
+                appCompat:srcCompat="@drawable/fast_scroller_indicator"
+                tools:ignore="RtlSymmetry"/>
+        </FrameLayout>
+    </omrkhld.com.koboldfightclub.RecyclerViewFastScroller>
 </RelativeLayout>

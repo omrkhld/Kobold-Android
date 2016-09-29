@@ -3,12 +3,15 @@ package omrkhld.com.koboldfightclub.MonsterList;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +23,7 @@ import io.realm.RealmResults;
 import omrkhld.com.koboldfightclub.DividerItemDecoration;
 import omrkhld.com.koboldfightclub.Monster;
 import omrkhld.com.koboldfightclub.R;
+import omrkhld.com.koboldfightclub.RecyclerViewFastScroller;
 
 public class MonsterListActivity extends AppCompatActivity {
 
@@ -31,6 +35,7 @@ public class MonsterListActivity extends AppCompatActivity {
 
     @BindView(R.id.list_view) RecyclerView list;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fast_scroller) RecyclerViewFastScroller fastScroller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,8 @@ public class MonsterListActivity extends AppCompatActivity {
 
         // Set the adapter
         list.setAdapter(new MonsterRecyclerViewAdapter(this, results));
+
+        fastScroller.setRecyclerView(list);
     }
 
     @Override

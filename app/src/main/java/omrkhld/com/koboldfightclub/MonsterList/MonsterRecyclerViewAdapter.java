@@ -20,8 +20,10 @@ import omrkhld.com.koboldfightclub.Manager.AddPlayerDialogFragment;
 import omrkhld.com.koboldfightclub.Manager.PCManagerFragment;
 import omrkhld.com.koboldfightclub.Monster;
 import omrkhld.com.koboldfightclub.R;
+import omrkhld.com.koboldfightclub.RecyclerViewFastScroller;
 
-public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRecyclerViewAdapter.ViewHolder> {
+public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRecyclerViewAdapter.ViewHolder>
+        implements RecyclerViewFastScroller.BubbleTextGetter{
 
     public static final String TAG = "MonsterAdapter";
     private final AppCompatActivity activity;
@@ -112,5 +114,14 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
             mView = view;
             ButterKnife.bind(this, view);
         }
+    }
+
+    @Override
+    public String getTextToShowInBubble(int position) {
+        Monster item = getItem(position);
+        if (position > 0 && item == null) {
+            item = getItem(position - 1);
+        }
+        return item.getName().substring(0, 1);
     }
 }
