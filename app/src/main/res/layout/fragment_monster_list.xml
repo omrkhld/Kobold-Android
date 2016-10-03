@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="omrkhld.com.koboldfightclub.MonsterList.MonsterListActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/fragment_monster">
+    </android.support.v7.widget.RecyclerView>
+
+    <omrkhld.com.koboldfightclub.RecyclerViewFastScroller
+        android:id="@+id/fast_scroller"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/headers">
+
+        <TextView
+            android:id="@+id/bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="56dp"
+            android:minHeight="56dp"
+            android:gravity="center"
+            android:background="@drawable/fast_scroller_bubble"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:text="A" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/scroll_bar"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/fast_scroller_bar"/>
+
+            <ImageView
+                android:id="@+id/handle"
+                android:layout_width="8dp"
+                android:layout_height="40dp"
+                android:src="@drawable/fast_scroller_indicator"/>
+        </FrameLayout>
+    </omrkhld.com.koboldfightclub.RecyclerViewFastScroller>
+</RelativeLayout>

@@ -33,15 +33,13 @@ public class InfoDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_info, container);
         ButterKnife.bind(this, view);
-        getDialog().setTitle("Difficulty Info");
+        getDialog().setCanceledOnTouchOutside(true);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Fetch arguments from bundle and set title
-        String title = getArguments().getString("title", "Group Info");
-        getDialog().setTitle(title);
+        getDialog().setTitle("Difficulty");
     }
 }

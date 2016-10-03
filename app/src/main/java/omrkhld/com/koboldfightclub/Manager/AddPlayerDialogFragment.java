@@ -194,6 +194,7 @@ public class AddPlayerDialogFragment extends DialogFragment {
             initWrapper.getEditText().setText(Integer.toString(p.getInitMod()));
 
             createPlayerButton.setText("Edit");
+            getDialog().setTitle("Edit Player");
         } else {
             nameWrapper.getEditText().setText("");
             levelWrapper.getEditText().setText("");
@@ -201,6 +202,7 @@ public class AddPlayerDialogFragment extends DialogFragment {
             initWrapper.getEditText().setText("");
 
             createPlayerButton.setText("Create");
+            getDialog().setTitle("New Player");
         }
     }
 

@@ -16,7 +16,7 @@ import com.crashlytics.android.Crashlytics;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
-import omrkhld.com.koboldfightclub.Manager.ManPagerAdapter;
+import omrkhld.com.koboldfightclub.Manager.ManagerPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         setTitle(getString(R.string.app_name));
 
-        adapter = new ManPagerAdapter(getSupportFragmentManager());
+        adapter = new ManagerPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
     }

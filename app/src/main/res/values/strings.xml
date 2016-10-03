@@ -26,6 +26,7 @@
 
     <string name="monsters_realm">monsters.realm</string>
     <string name="players_realm">players.realm</string>
+    <string name="selected_realm">selected.realm</string>
     <string name="pref_party_threshold">kobold.PARTY_THRESHOLD</string>
     <string name="pref_party_names">kobold.PARTY_NAMES</string>
 
@@ -118,4 +119,7 @@
         <item>30</item>
     </string-array>
     <string name="title_activity_monster_list">MonsterListActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

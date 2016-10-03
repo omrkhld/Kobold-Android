@@ -1,18 +1,18 @@
-package omrkhld.com.koboldfightclub.Manager;
+package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Created by Omar on 23/9/2016.
+ * Created by Omar on 3/10/2016.
  */
 
-public class ManPagerAdapter extends FragmentPagerAdapter {
+public class ListPagerAdapter extends FragmentPagerAdapter {
     private static int NUM_ITEMS = 2;
-    private String tabTitles[] = new String[] {"Encounter Manager", "Player Manager"};
+    private String tabTitles[] = new String[] {"Monster List", "Selected Monsters"};
 
-    public ManPagerAdapter(FragmentManager fragmentManager) {
+    public ListPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 
@@ -27,9 +27,9 @@ public class ManPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return EncManagerFragment.newInstance();
+                return MonsterListFragment.newInstance();
             case 1:
-                return PCManagerFragment.newInstance();
+                return SelectedListFragment.newInstance();
             default:
                 return null;
         }

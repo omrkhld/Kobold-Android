@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_margin="4dp"
             android:background="@color/colorDeadly"
             android:id="@+id/deadly_bar">
 
@@ -42,7 +43,10 @@
             android:layout_below="@id/deadly_bar"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorHard"
             android:id="@+id/hard_bar">
 
@@ -69,7 +73,10 @@
             android:layout_below="@id/hard_bar"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorMed"
             android:id="@+id/med_bar">
 
@@ -96,7 +103,10 @@
             android:layout_below="@id/med_bar"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorEasy"
             android:id="@+id/easy_bar">
 
@@ -123,7 +133,10 @@
             android:layout_below="@id/easy_bar"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorPair"
             android:id="@+id/pair_bar">
 
@@ -150,7 +163,10 @@
             android:layout_below="@id/pair_bar"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorGroup"
             android:id="@+id/group_bar">
 
@@ -174,12 +190,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/group_bar"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorTrivial"
-            android:id="@+id/trivial_bar">
+            android:id="@+id/trivial_bar"
+            android:layout_below="@+id/group_bar">
 
             <TextView
                 android:layout_width="wrap_content"
