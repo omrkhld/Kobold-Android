@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="omrkhld.com.koboldfightclub.MonsterList.MonsterListActivity">
+    tools:context="omrkhld.com.koboldfightclub.MonsterList.MonsterListActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_view"
@@ -15,12 +16,11 @@
         tools:listitem="@layout/fragment_monster">
     </android.support.v7.widget.RecyclerView>
 
-    <omrkhld.com.koboldfightclub.RecyclerViewFastScroller
+    <omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller
         android:id="@+id/fast_scroller"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/headers">
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/bubble"
@@ -52,5 +52,5 @@
                 android:layout_height="40dp"
                 android:src="@drawable/fast_scroller_indicator"/>
         </FrameLayout>
-    </omrkhld.com.koboldfightclub.RecyclerViewFastScroller>
+    </omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller>
 </RelativeLayout>

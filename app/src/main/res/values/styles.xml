@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -38,5 +38,11 @@
 
     <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
+    </style>
+
+    <style name="Ripple" tools:keep="@style/Ripple"/>
+
+    <style name="Ripple.List" tools:keep="@style/Ripple_List">
+        <item name="android:background">?android:selectableItemBackground</item>
     </style>
 </resources>

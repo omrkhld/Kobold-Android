@@ -20,10 +20,14 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import omrkhld.com.koboldfightclub.DividerItemDecoration;
-import omrkhld.com.koboldfightclub.Monster;
+import omrkhld.com.koboldfightclub.Helper.DividerItemDecoration;
+import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.R;
-import omrkhld.com.koboldfightclub.RecyclerViewFastScroller;
+import omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller;
+
+/**
+ * Created by Omar on 5/10/2016.
+ */
 
 public class MonsterListFragment extends Fragment {
 
@@ -56,7 +60,7 @@ public class MonsterListFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        monstersConfig = new RealmConfiguration.Builder(getContext())
+        monstersConfig = new RealmConfiguration.Builder()
                 .name(getString(R.string.monsters_realm))
                 .deleteRealmIfMigrationNeeded()
                 .build();
@@ -65,7 +69,7 @@ public class MonsterListFragment extends Fragment {
         results = query.findAllAsync();
 
         list.addItemDecoration(new DividerItemDecoration(getContext()));
-        list.setAdapter(new MonsterRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
+        list.setAdapter(new MonsterRealmAdapter((AppCompatActivity) getActivity(), results));
         fastScroller.setRecyclerView(list);
 
         return view;
@@ -76,7 +80,7 @@ public class MonsterListFragment extends Fragment {
         super.onResume();
         RealmQuery<Monster> query = monstersRealm.where(Monster.class);
         results = query.findAllAsync();
-        list.setAdapter(new MonsterRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
+        list.setAdapter(new MonsterRealmAdapter((AppCompatActivity) getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
     }
 
@@ -152,7 +156,7 @@ public class MonsterListFragment extends Fragment {
 
     private void updateRecyclerView(RealmQuery<Monster> query) {
         results = buildQuery(query);
-        list.setAdapter(new MonsterRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
+        list.setAdapter(new MonsterRealmAdapter((AppCompatActivity) getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
     }
 

@@ -1,10 +1,8 @@
 package omrkhld.com.koboldfightclub.Manager;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,26 +12,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
-import omrkhld.com.koboldfightclub.Player;
+import omrkhld.com.koboldfightclub.POJO.Player;
 import omrkhld.com.koboldfightclub.R;
 
 /**
  * Created by Omar on 27/9/2016.
  */
 
-public class PCRecyclerViewAdapter extends RealmRecyclerViewAdapter<Player, PCRecyclerViewAdapter.ViewHolder> {
+public class PCRealmAdapter extends RealmRecyclerViewAdapter<Player, PCRealmAdapter.ViewHolder> {
     private final String TAG = "PCAdapter";
     private final AppCompatActivity activity;
 
-    public PCRecyclerViewAdapter(AppCompatActivity activity, OrderedRealmCollection<Player> data) {
+    public PCRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Player> data) {
         super(activity, data, true);
         this.activity = activity;
     }
 
     @Override
-    public PCRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PCRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_player, parent, false);
-        return new PCRecyclerViewAdapter.ViewHolder(view);
+        return new PCRealmAdapter.ViewHolder(view);
     }
 
     @Override

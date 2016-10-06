@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.POJO;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

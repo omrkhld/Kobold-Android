@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.Helper;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import omrkhld.com.koboldfightclub.R;
 
 /**
  * Created by Omar on 29/9/2016.

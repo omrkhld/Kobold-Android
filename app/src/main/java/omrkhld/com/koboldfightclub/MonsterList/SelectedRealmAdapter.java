@@ -2,7 +2,6 @@ package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,27 +11,31 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
-import omrkhld.com.koboldfightclub.Manager.AddPlayerDialogFragment;
-import omrkhld.com.koboldfightclub.Manager.PCManagerFragment;
-import omrkhld.com.koboldfightclub.Monster;
+import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.R;
-import omrkhld.com.koboldfightclub.RecyclerViewFastScroller;
 
-public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRecyclerViewAdapter.ViewHolder>
-        implements RecyclerViewFastScroller.BubbleTextGetter{
+/**
+ * Created by Omar on 6/10/2016.
+ */
+
+public class SelectedRealmAdapter extends RealmRecyclerViewAdapter<Monster, SelectedRealmAdapter.ViewHolder> {
 
     public static final String TAG = "MonsterAdapter";
     private final AppCompatActivity activity;
     private SharedPreferences xpThresholds;
     public int numPlayers, easy, med, hard, deadly;
+    public HashMap<String, Integer> quantity;
 
-    public MonsterRecyclerViewAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
+    public SelectedRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data, HashMap<String, Integer> quantity) {
         super(activity, data, true);
         this.activity = activity;
+        this.quantity = quantity;
         xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
         numPlayers = xpThresholds.getInt("numPlayers", 1);
         easy = xpThresholds.getInt("easy", 25);
@@ -42,14 +45,14 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_monster, parent, false);
+    public SelectedRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_selected, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        Monster obj = getData().get(position);
+    public void onBindViewHolder(final SelectedRealmAdapter.ViewHolder holder, int position) {
+        final Monster obj = getData().get(position);
         holder.name.setText(obj.getName());
         float cr = obj.getCR();
         String crText = "";
@@ -62,10 +65,10 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
         } else {
             crText = String.format("%d", (int) cr);
         }
+        holder.qty.setText(String.valueOf(quantity.get(obj.getName())));
         holder.cr.setText(crText);
 
         double tempExp = obj.getExp();
-
         GradientDrawable bgCircle = (GradientDrawable) holder.difficulty.getDrawable();
         if (tempExp >= deadly) {
             bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorDeadly));
@@ -108,20 +111,12 @@ public class MonsterRecyclerViewAdapter extends RealmRecyclerViewAdapter<Monster
         @BindView(R.id.monster_name) TextView name;
         @BindView(R.id.monster_cr) TextView cr;
         @BindView(R.id.monster_difficulty) ImageView difficulty;
+        @BindView(R.id.monster_qty) TextView qty;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
         }
-    }
-
-    @Override
-    public String getTextToShowInBubble(int position) {
-        Monster item = getItem(position);
-        if (position > 0 && item == null) {
-            item = getItem(position - 1);
-        }
-        return item.getName().substring(0, 1);
     }
 }

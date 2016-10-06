@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.Helper;
 
 import java.util.ArrayList;
 
@@ -6,18 +6,18 @@ import java.util.ArrayList;
  * Created by Omar on 27/9/2016.
  */
 
-public class XPThresholds {
+public class XPThresholdsSingleton {
 
-    private static XPThresholds mInstance = null;
+    private static XPThresholdsSingleton mInstance = null;
     private ArrayList<ArrayList<Integer>> thresholds;
 
-    private XPThresholds() {
+    private XPThresholdsSingleton() {
         thresholds = new ArrayList<>();
     }
 
-    public static XPThresholds getInstance() {
+    public static XPThresholdsSingleton getInstance() {
         if (mInstance == null) {
-            mInstance = new XPThresholds();
+            mInstance = new XPThresholdsSingleton();
         }
         return mInstance;
     }

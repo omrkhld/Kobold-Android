@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import omrkhld.com.koboldfightclub.Helper.XPThresholdsSingleton;
+import omrkhld.com.koboldfightclub.POJO.Monster;
 
 /**
  * Created by Omar on 2/8/2016.
@@ -37,7 +39,7 @@ public class MainApplication extends Application {
                 row.add(Integer.parseInt(rowData[4]));
                 thresholds.add(row);
             }
-            XPThresholds.getInstance().setThresholds(thresholds);
+            XPThresholdsSingleton.getInstance().setThresholds(thresholds);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,7 +51,9 @@ public class MainApplication extends Application {
             }
         }
 
-        monstersConfig = new RealmConfiguration.Builder(this)
+        Realm.init(this);
+
+        monstersConfig = new RealmConfiguration.Builder()
                 .name(getString(R.string.monsters_realm))
                 .deleteRealmIfMigrationNeeded()
                 .build();

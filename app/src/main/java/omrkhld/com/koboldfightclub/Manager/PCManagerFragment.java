@@ -19,8 +19,8 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import omrkhld.com.koboldfightclub.DividerItemDecoration;
-import omrkhld.com.koboldfightclub.Player;
+import omrkhld.com.koboldfightclub.Helper.DividerItemDecoration;
+import omrkhld.com.koboldfightclub.POJO.Player;
 import omrkhld.com.koboldfightclub.R;
 
 /**
@@ -47,7 +47,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         xpThresholds = getActivity().getSharedPreferences(getString(R.string.pref_party_threshold), 0);
-        playersConfig = new RealmConfiguration.Builder(this.getContext())
+        playersConfig = new RealmConfiguration.Builder()
                 .name(getString(R.string.players_realm))
                 .deleteRealmIfMigrationNeeded()
                 .build();
@@ -74,8 +74,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         });
 
         list.addItemDecoration(new DividerItemDecoration(getContext()));
-        // Set the adapter
-        list.setAdapter(new PCRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
+        list.setAdapter(new PCRealmAdapter((AppCompatActivity) getActivity(), results));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -129,7 +128,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         int numPlayers = 1, easy = 0, med = 0, hard = 0, deadly = 0;
         RealmQuery<Player> query = playersRealm.where(Player.class);
         results = query.findAll();
-        list.setAdapter(new PCRecyclerViewAdapter((AppCompatActivity) getActivity(), results));
+        list.setAdapter(new PCRealmAdapter((AppCompatActivity) getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
 
         if (results.isEmpty()) {

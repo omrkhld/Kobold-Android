@@ -14,4 +14,16 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/fragment_monster">
     </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_forward"
+        android:id="@+id/list_fab"
+        app:layout_anchor="@id/list_view"
+        app:layout_anchorGravity="bottom|right|end"/>
 </RelativeLayout>

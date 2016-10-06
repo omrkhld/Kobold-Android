@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub;
+package omrkhld.com.koboldfightclub.Helper;
 
 import android.content.Context;
 import android.graphics.Canvas;
