@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import omrkhld.com.koboldfightclub.Helper.SelectedSingleton;
 import omrkhld.com.koboldfightclub.R;
 
 public class MonsterListActivity extends AppCompatActivity {
@@ -27,6 +28,8 @@ public class MonsterListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         setTitle(getString(R.string.fragment_encbuilder));
+
+        SelectedSingleton.newInstance();
 
         adapter = new ListPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);

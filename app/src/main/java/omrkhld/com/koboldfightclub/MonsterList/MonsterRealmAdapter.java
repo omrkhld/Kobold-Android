@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
+import omrkhld.com.koboldfightclub.Helper.SelectedSingleton;
 import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.R;
 import omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller;
@@ -74,7 +75,8 @@ public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, Monst
             public void onClick(View v) {
                 int curr = Integer.parseInt(holder.qty.getText().toString());
                 holder.qty.setText(String.valueOf(curr+1));
-                EventBus.getDefault().post(new AddEvent(obj.getName()));
+                SelectedSingleton.getInstance().addQty(obj.getName());
+                EventBus.getDefault().post(new UpdateEvent(obj.getName()));
             }
         });
 
@@ -82,8 +84,11 @@ public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, Monst
             @Override
             public void onClick(View v) {
                 int curr = Integer.parseInt(holder.qty.getText().toString());
-                if (curr > 0) holder.qty.setText(String.valueOf(curr-1));
-                EventBus.getDefault().post(new RemoveEvent(obj.getName()));
+                if (curr > 0) {
+                    holder.qty.setText(String.valueOf(curr-1));
+                    SelectedSingleton.getInstance().removeQty(obj.getName());
+                    EventBus.getDefault().post(new UpdateEvent(obj.getName()));
+                }
             }
         });
 
@@ -153,18 +158,10 @@ public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, Monst
         return item.getName().substring(0, 1);
     }
 
-    public class AddEvent {
+    public class UpdateEvent {
         public final String name;
 
-        public AddEvent(String name) {
-            this.name = name;
-        }
-    }
-
-    public class RemoveEvent {
-        public final String name;
-
-        public RemoveEvent(String name) {
+        public UpdateEvent(String name) {
             this.name = name;
         }
     }

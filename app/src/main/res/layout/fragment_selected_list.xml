@@ -6,10 +6,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="omrkhld.com.koboldfightclub.MonsterList.MonsterListActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="48dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:id="@+id/headers">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:text="Name"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:text="CR"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headers"
+        android:src="@drawable/list_divider"
+        android:id="@+id/header_divider"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/selected_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/header_divider"
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/fragment_monster">

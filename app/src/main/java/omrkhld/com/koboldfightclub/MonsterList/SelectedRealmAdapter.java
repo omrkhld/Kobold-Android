@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
+import omrkhld.com.koboldfightclub.Helper.SelectedSingleton;
 import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.R;
 
@@ -32,10 +33,10 @@ public class SelectedRealmAdapter extends RealmRecyclerViewAdapter<Monster, Sele
     public int numPlayers, easy, med, hard, deadly;
     public HashMap<String, Integer> quantity;
 
-    public SelectedRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data, HashMap<String, Integer> quantity) {
+    public SelectedRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
-        this.quantity = quantity;
+        quantity = SelectedSingleton.getInstance().getQtyMap();
         xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
         numPlayers = xpThresholds.getInt("numPlayers", 1);
         easy = xpThresholds.getInt("easy", 25);
