@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -72,7 +70,7 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
 
     public void initRealm() {
         encConfig = new RealmConfiguration.Builder()
-                .name(getString(R.string.encounters_realm))
+                .name(getString(R.string.encbuild_realm))
                 .deleteRealmIfMigrationNeeded()
                 .build();
         encRealm = Realm.getInstance(encConfig);
@@ -99,7 +97,7 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         RealmQuery<Encounter> query = encRealm.where(Encounter.class);
         encResults = query.findAll();
         Log.e(TAG, "Enc size: " + encResults.size());
-        list.setAdapter(new EncRealmAdapter((AppCompatActivity)getActivity(), encResults));
+        list.setAdapter(new EncBuildRealmAdapter((AppCompatActivity)getActivity(), encResults));
         list.getAdapter().notifyDataSetChanged();
     }
 

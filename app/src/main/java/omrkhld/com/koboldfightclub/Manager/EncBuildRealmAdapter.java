@@ -16,24 +16,24 @@ import omrkhld.com.koboldfightclub.R;
  * Created by Omar on 6/10/2016.
  */
 
-public class EncRealmAdapter extends RealmRecyclerViewAdapter<Encounter, EncRealmAdapter.ViewHolder> {
+public class EncBuildRealmAdapter extends RealmRecyclerViewAdapter<Encounter, EncBuildRealmAdapter.ViewHolder> {
 
     public static final String TAG = "EncounterAdapter";
     private final AppCompatActivity activity;
 
-    public EncRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Encounter> data) {
+    public EncBuildRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Encounter> data) {
         super(activity, data, true);
         this.activity = activity;
     }
 
     @Override
-    public EncRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_encounter, parent, false);
-        return new EncRealmAdapter.ViewHolder(view);
+    public EncBuildRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_enc_build, parent, false);
+        return new EncBuildRealmAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final EncRealmAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final EncBuildRealmAdapter.ViewHolder holder, int position) {
 
     }
 
