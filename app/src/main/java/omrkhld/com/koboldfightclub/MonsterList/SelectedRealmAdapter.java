@@ -47,7 +47,7 @@ public class SelectedRealmAdapter extends RealmRecyclerViewAdapter<Monster, Sele
 
     @Override
     public SelectedRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_selected, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_selected, parent, false);
         return new ViewHolder(view);
     }
 

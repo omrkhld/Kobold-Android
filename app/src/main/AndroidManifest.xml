@@ -21,12 +21,13 @@
         <activity
             android:name=".MonsterList.MonsterListActivity"
             android:label="@string/title_activity_monster_list"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"></activity>
 
-        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="cb6c4e65c36b731224ad03cd104c0b0e756e0409" />
+
+        <activity android:name=".Run.RunActivity"></activity>
     </application>
 
 </manifest>

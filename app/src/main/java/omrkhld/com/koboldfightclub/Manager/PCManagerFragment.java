@@ -1,17 +1,24 @@
 package omrkhld.com.koboldfightclub.Manager;
 
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,6 +84,18 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         list.setAdapter(new PCRealmAdapter((AppCompatActivity) getActivity(), results));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            Drawable background;
+            Drawable deleteIcon;
+            int deleteIconMargin;
+            boolean initiated;
+
+            private void init() {
+                background = new ColorDrawable(Color.RED);
+                deleteIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_delete);
+                deleteIconMargin = (int) getActivity().getResources().getDimension(R.dimen.ic_clear_margin);
+                initiated = true;
+            }
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -85,7 +104,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                results = playersRealm.where(Player.class).findAll();
+                results = playersRealm.where(Player.class).findAll().sort("name");
                 final Player p = new Player(results.get(position));
                 playersRealm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -93,6 +112,8 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
                         results.deleteFromRealm(position);
                     }
                 });
+                //updateList();
+                list.getAdapter().notifyItemRemoved(position);
                 Snackbar.make(getView(), "Undo delete?", Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener() {
                             @Override
@@ -100,10 +121,58 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
                                 playersRealm.beginTransaction();
                                 playersRealm.copyToRealm(p);
                                 playersRealm.commitTransaction();
-                                updateList();
+                                //updateList();
+                                list.getAdapter().notifyItemInserted(position);
                             }
                         })
                         .show();
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    View itemView = viewHolder.itemView;
+
+                    if (!initiated) {
+                        init();
+                    }
+
+                    if (dX < 0) {
+                        // draw red background
+                        background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                        background.draw(c);
+
+                        // draw delete icon
+                        int itemHeight = itemView.getBottom() - itemView.getTop();
+                        int intrinsicWidth = deleteIcon.getIntrinsicWidth();
+                        int intrinsicHeight = deleteIcon.getIntrinsicWidth();
+
+                        int xMarkLeft = itemView.getRight() - deleteIconMargin - intrinsicWidth;
+                        int xMarkRight = itemView.getRight() - deleteIconMargin;
+                        int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                        int xMarkBottom = xMarkTop + intrinsicHeight;
+                        deleteIcon.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+                        deleteIcon.draw(c);
+                    } else {
+                        // draw red background
+                        background.setBounds(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + (int) dX, itemView.getBottom());
+                        background.draw(c);
+
+                        // draw delete icon
+                        int itemHeight = itemView.getBottom() - itemView.getTop();
+                        int intrinsicWidth = deleteIcon.getIntrinsicWidth();
+                        int intrinsicHeight = deleteIcon.getIntrinsicWidth();
+
+                        int xMarkLeft = itemView.getLeft() + deleteIconMargin;
+                        int xMarkRight = itemView.getLeft() + deleteIconMargin + intrinsicWidth;
+                        int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                        int xMarkBottom = xMarkTop + intrinsicHeight;
+                        deleteIcon.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+                        deleteIcon.draw(c);
+                    }
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -127,7 +196,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     public void updateList() {
         int numPlayers = 1, easy = 0, med = 0, hard = 0, deadly = 0;
         RealmQuery<Player> query = playersRealm.where(Player.class);
-        results = query.findAll();
+        results = query.findAll().sort("name");
         list.setAdapter(new PCRealmAdapter((AppCompatActivity) getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
 
@@ -150,6 +219,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         editor.putInt("hard", hard);
         editor.putInt("deadly", deadly);
         editor.apply();
+        EventBus.getDefault().post(new UpdateEvent());
     }
 
     @Override
@@ -158,5 +228,11 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         playersRealm.copyToRealmOrUpdate(player);
         playersRealm.commitTransaction();
         updateList();
+    }
+
+    //This is to update the Difficulty color in Encounter Manager page
+    public class UpdateEvent {
+        public UpdateEvent() {
+        }
     }
 }

@@ -87,7 +87,6 @@ public class SelectedListFragment extends Fragment {
                             monsters.add(m);
                         }
                     }
-                    Log.e(TAG, "Size: " + monsters.size());
                     EventBus.getDefault().post(new SubmitEvent(monsters));
                     getActivity().finish();
                 }

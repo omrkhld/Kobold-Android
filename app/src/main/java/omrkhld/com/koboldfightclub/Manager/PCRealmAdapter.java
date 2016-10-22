@@ -30,7 +30,7 @@ public class PCRealmAdapter extends RealmRecyclerViewAdapter<Player, PCRealmAdap
 
     @Override
     public PCRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_player, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_player, parent, false);
         return new PCRealmAdapter.ViewHolder(view);
     }
 
@@ -40,7 +40,7 @@ public class PCRealmAdapter extends RealmRecyclerViewAdapter<Player, PCRealmAdap
         holder.name.setText(player.getName());
         holder.lvl.setText(Integer.toString(player.getLevel()));
         holder.hp.setText(Integer.toString(player.getHP()));
-        holder.init.setText(Integer.toString(player.getInitMod()));
+        holder.init.setText(player.getInitMod());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

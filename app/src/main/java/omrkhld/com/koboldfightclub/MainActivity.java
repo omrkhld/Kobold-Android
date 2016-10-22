@@ -1,6 +1,9 @@
 package omrkhld.com.koboldfightclub;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,14 +19,19 @@ import com.crashlytics.android.Crashlytics;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import omrkhld.com.koboldfightclub.Manager.ManagerPagerAdapter;
+import omrkhld.com.koboldfightclub.Run.RunActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+    @BindView(R.id.main_layout) CoordinatorLayout layout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.view_pager) ViewPager pager;
     @BindView(R.id.tab_layout) TabLayout tabs;
+
     public FragmentPagerAdapter adapter;
 
     @Override
@@ -74,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.run:
+                Intent intent = new Intent(this, RunActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

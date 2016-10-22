@@ -95,7 +95,7 @@
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/fragment_monster">
+            tools:listitem="@layout/item_monster">
         </android.support.v7.widget.RecyclerView>
 
         <omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller

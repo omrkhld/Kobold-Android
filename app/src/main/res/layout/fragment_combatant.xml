@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:id="@+id/linear_layout">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:text="Name"
+                android:id="@+id/combatant_name"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="Mod"
+            android:id="@+id/combatant_init_mod"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="Init"
+            android:id="@+id/combatant_init"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="HP"
+            android:id="@+id/combatant_hp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear_layout"
+        android:src="@drawable/list_divider"/>
+</RelativeLayout>

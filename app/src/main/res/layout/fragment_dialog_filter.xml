@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:text="Size: "/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:entries="@array/size_array"
+            android:id="@+id/size_spinner">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:text="Type: "/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:entries="@array/type_array"
+            android:id="@+id/type_spinner">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:text="Alignment: "/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:entries="@array/alignment_array"
+            android:id="@+id/alignment_spinner">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:text="Min CR: "/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="0.9"
+            android:entries="@array/cr_array"
+            android:id="@+id/mincr_spinner">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:text="Max CR: "/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="0.9"
+            android:entries="@array/cr_array"
+            android:id="@+id/maxcr_spinner">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear Filters"
+            android:id="@+id/clear_button"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="8dp"
+            android:text="Filter"
+            android:id="@+id/filter_button"/>
+    </LinearLayout>
+</LinearLayout>

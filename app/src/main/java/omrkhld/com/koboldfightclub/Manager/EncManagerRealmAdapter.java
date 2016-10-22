@@ -1,4 +1,4 @@
-package omrkhld.com.koboldfightclub.MonsterList;
+package omrkhld.com.koboldfightclub.Manager;
 
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
@@ -11,26 +11,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
-import omrkhld.com.koboldfightclub.Helper.SelectedSingleton;
 import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.R;
-import omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller;
 
-public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, MonsterRealmAdapter.ViewHolder>
-        implements RecyclerViewFastScroller.BubbleTextGetter{
+/**
+ * Created by Omar on 6/10/2016.
+ */
 
-    public static final String TAG = "MonsterAdapter";
+public class EncManagerRealmAdapter extends RealmRecyclerViewAdapter<Monster, EncManagerRealmAdapter.ViewHolder> {
+
+    public static final String TAG = "EncounterAdapter";
     private final AppCompatActivity activity;
     private SharedPreferences xpThresholds;
     public int numPlayers, easy, med, hard, deadly;
 
-    public MonsterRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
+    public EncManagerRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
         xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
@@ -42,13 +41,13 @@ public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, Monst
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monster, parent, false);
-        return new ViewHolder(view);
+    public EncManagerRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monster_alt, parent, false);
+        return new EncManagerRealmAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final EncManagerRealmAdapter.ViewHolder holder, int position) {
         final Monster obj = getData().get(position);
         holder.name.setText(obj.getName());
         float cr = obj.getCR();
@@ -66,28 +65,6 @@ public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, Monst
         holder.alignment.setText(obj.getAlignment());
         holder.type.setText(obj.getType());
         holder.src.setText(obj.getSource());
-
-        holder.upButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int curr = Integer.parseInt(holder.qty.getText().toString());
-                holder.qty.setText(String.valueOf(curr+1));
-                SelectedSingleton.getInstance().addQty(obj.getName());
-                EventBus.getDefault().post(new UpdateEvent(obj.getName()));
-            }
-        });
-
-        holder.downButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int curr = Integer.parseInt(holder.qty.getText().toString());
-                if (curr > 0) {
-                    holder.qty.setText(String.valueOf(curr-1));
-                    SelectedSingleton.getInstance().removeQty(obj.getName());
-                    EventBus.getDefault().post(new UpdateEvent(obj.getName()));
-                }
-            }
-        });
 
         double tempExp = obj.getExp();
         GradientDrawable bgCircle = (GradientDrawable) holder.difficulty.getDrawable();
@@ -131,35 +108,15 @@ public class MonsterRealmAdapter extends RealmRecyclerViewAdapter<Monster, Monst
 
         @BindView(R.id.monster_name) TextView name;
         @BindView(R.id.monster_cr) TextView cr;
-        @BindView(R.id.monster_difficulty) ImageView difficulty;
-        @BindView(R.id.up_button) ImageView upButton;
-        @BindView(R.id.down_button) ImageView downButton;
-        @BindView(R.id.monster_qty) TextView qty;
-        @BindView(R.id.monster_alignment) TextView alignment;
         @BindView(R.id.monster_type) TextView type;
+        @BindView(R.id.monster_alignment) TextView alignment;
         @BindView(R.id.monster_src) TextView src;
+        @BindView(R.id.monster_difficulty) ImageView difficulty;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
-        }
-    }
-
-    @Override
-    public String getTextToShowInBubble(int position) {
-        Monster item = getItem(position);
-        if (position > 0 && item == null) {
-            item = getItem(position - 1);
-        }
-        return item.getName().substring(0, 1);
-    }
-
-    public class UpdateEvent {
-        public final String name;
-
-        public UpdateEvent(String name) {
-            this.name = name;
         }
     }
 }

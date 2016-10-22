@@ -13,9 +13,9 @@ public class Player extends RealmObject {
     @PrimaryKey @Required
     private String name;
 
-    private String party;
+    private String party, initMod;
     private int level, easy, med, hard, deadly;
-    private int initMod, hp;
+    private int hp;
 
     public Player() {
         name = "";
@@ -25,7 +25,7 @@ public class Player extends RealmObject {
         med = 50;
         hard = 75;
         deadly = 100;
-        initMod = 0;
+        initMod = "0";
         hp = 1;
     }
 
@@ -48,7 +48,7 @@ public class Player extends RealmObject {
     public int getMed() { return med; }
     public int getHard() { return hard; }
     public int getDeadly() { return deadly; }
-    public int getInitMod() { return initMod; }
+    public String getInitMod() { return initMod; }
     public int getHP() { return hp; }
 
     public void setName(String n) { name = n; }
@@ -58,6 +58,6 @@ public class Player extends RealmObject {
     public void setMed(int m) { med = m; }
     public void setHard(int h) { hard = h; }
     public void setDeadly(int d) { deadly = d; }
-    public void setInitMod(int i) { initMod = i; }
+    public void setInitMod(String i) { initMod = i; }
     public void setHP(int h) { hp = h; }
 }

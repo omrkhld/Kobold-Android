@@ -38,8 +38,8 @@ public class AddPlayerDialogFragment extends DialogFragment {
     @BindView(R.id.hp_edit) EditText hpEdit;
     @BindView(R.id.create_player) Button createPlayerButton;
 
-    public String name, levelString, initString, hpString;
-    public int level = 1, init = 0, hp = 1;
+    public String name, levelString, hpString, init;
+    public int level = 1, hp = 1;
     public static Player p;
 
     public AddPlayerDialogFragment() {
@@ -122,10 +122,10 @@ public class AddPlayerDialogFragment extends DialogFragment {
                         levelWrapper.setError("Level is empty!");
                     } else level = Integer.parseInt(levelString);
 
-                    initString = initWrapper.getEditText().getText().toString();
-                    if (TextUtils.isEmpty(initString)) {
+                    init = initWrapper.getEditText().getText().toString();
+                    if (TextUtils.isEmpty(init)) {
                         initWrapper.setError("Init Modifier is empty!");
-                    } else init = Integer.parseInt(initString);
+                    }
 
                     hpString = hpWrapper.getEditText().getText().toString();
                     if (TextUtils.isEmpty(hpString)) {
@@ -142,8 +142,6 @@ public class AddPlayerDialogFragment extends DialogFragment {
                         levelWrapper.setError("Level too high!");
                     } else if (level < 1) {
                         levelWrapper.setError("Level too low!");
-                    } else if (!TextUtils.isDigitsOnly(initString)) {
-                        initWrapper.setError("Not a number!");
                     } else if (!TextUtils.isDigitsOnly(hpString)) {
                         hpWrapper.setError("Not a number!");
                     } else if (hp < 1) {
@@ -183,7 +181,7 @@ public class AddPlayerDialogFragment extends DialogFragment {
             nameWrapper.getEditText().setText(p.getName());
             levelWrapper.getEditText().setText(Integer.toString(p.getLevel()));
             hpWrapper.getEditText().setText(Integer.toString(p.getHP()));
-            initWrapper.getEditText().setText(Integer.toString(p.getInitMod()));
+            initWrapper.getEditText().setText(p.getInitMod());
 
             createPlayerButton.setText("Edit");
             getDialog().setTitle("Edit Player");

@@ -1,5 +1,6 @@
 package omrkhld.com.koboldfightclub.MonsterList;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +35,7 @@ import omrkhld.com.koboldfightclub.Helper.RecyclerViewFastScroller;
  * Created by Omar on 5/10/2016.
  */
 
-public class MonsterListFragment extends Fragment {
+public class MonsterListFragment extends Fragment implements FilterDialogFragment.FilterDialogListener {
 
     public static final String TAG = "MonsterListFragment";
     private RealmConfiguration monstersConfig;
@@ -83,7 +85,6 @@ public class MonsterListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         RealmQuery<Monster> query = monstersRealm.where(Monster.class);
-        results = query.findAllAsync();
         list.setAdapter(new MonsterRealmAdapter((AppCompatActivity) getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
     }
@@ -115,9 +116,6 @@ public class MonsterListFragment extends Fragment {
                     query.equalTo("cr", Float.parseFloat(newText));
                 } catch(NumberFormatException e) {
                     query.contains("name", newText, Case.INSENSITIVE);
-                    query.or().contains("size", newText, Case.INSENSITIVE);
-                    query.or().contains("type", newText, Case.INSENSITIVE);
-                    query.or().contains("tag", newText, Case.INSENSITIVE);
                 }
 
                 updateRecyclerView(query);
@@ -140,8 +138,7 @@ public class MonsterListFragment extends Fragment {
                 showInfoDialog();
                 return true;
             case R.id.filter:
-                return true;
-            case R.id.search:
+                showFilterDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -166,7 +163,38 @@ public class MonsterListFragment extends Fragment {
 
     private void showInfoDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        InfoDialogFragment infoDialogFragment = InfoDialogFragment.newInstance("Difficulty");
-        infoDialogFragment.show(fm, "fragment_dialog_info");
+        InfoDialogFragment dialog = InfoDialogFragment.newInstance("Difficulty");
+        dialog.show(fm, "fragment_dialog_info");
+    }
+
+    private void showFilterDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FilterDialogFragment dialog = FilterDialogFragment.newInstance("Filters");
+        dialog.setTargetFragment(MonsterListFragment.this, 300);
+        dialog.show(fm, "fragment_dialog_filter");
+    }
+
+    @Override
+    public void onFiltered(String size, String type, String alignment, String min, String max) {
+        if (size.equals("All")) {
+            conditions[0] = "";
+        } else {
+            conditions[0] = size;
+        }
+        if (type.equals("All")) {
+            conditions[1] = "";
+        } else {
+            conditions[1] = type;
+        }
+        if (alignment.equals("All")) {
+            conditions[2] = "";
+        } else {
+            conditions[2] = alignment;
+        }
+        conditions[3] = min;
+        conditions[4] = max;
+
+        RealmQuery<Monster> query = monstersRealm.where(Monster.class);
+        updateRecyclerView(query);
     }
 }

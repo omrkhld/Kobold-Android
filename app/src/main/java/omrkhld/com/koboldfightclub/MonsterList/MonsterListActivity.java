@@ -1,5 +1,6 @@
 package omrkhld.com.koboldfightclub.MonsterList;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,6 +21,7 @@ public class MonsterListActivity extends AppCompatActivity {
     @BindView(R.id.list_view_pager) ViewPager pager;
     @BindView(R.id.list_tab_layout)  TabLayout tabs;
     public FragmentPagerAdapter adapter;
+    public SharedPreferences filters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,9 @@ public class MonsterListActivity extends AppCompatActivity {
         adapter = new ListPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
+
+        filters = getSharedPreferences(getString(R.string.pref_filters), 0);
+        filters.edit().clear().apply();
     }
 
     @Override
