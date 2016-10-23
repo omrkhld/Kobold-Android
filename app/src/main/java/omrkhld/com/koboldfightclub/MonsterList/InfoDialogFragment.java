@@ -31,7 +31,7 @@ public class InfoDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_info, container);
+        View view = inflater.inflate(R.layout.dialog_info, container);
         ButterKnife.bind(this, view);
         getDialog().setCanceledOnTouchOutside(true);
         return view;

@@ -2,9 +2,11 @@ package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -45,6 +47,7 @@ public class MonsterListFragment extends Fragment implements FilterDialogFragmen
 
     @BindView(R.id.list_view) RecyclerView list;
     @BindView(R.id.fast_scroller) RecyclerViewFastScroller fastScroller;
+    @BindView(R.id.list_fab) FloatingActionButton fab;
 
     public static MonsterListFragment newInstance() {
         MonsterListFragment fragment = new MonsterListFragment();
@@ -58,7 +61,7 @@ public class MonsterListFragment extends Fragment implements FilterDialogFragmen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_monster_list, container, false);
         ButterKnife.bind(this, view);
@@ -77,6 +80,14 @@ public class MonsterListFragment extends Fragment implements FilterDialogFragmen
         list.addItemDecoration(new DividerItemDecoration(getContext()));
         list.setAdapter(new MonsterRealmAdapter((AppCompatActivity) getActivity(), results));
         fastScroller.setRecyclerView(list);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewPager vp = (ViewPager) container;
+                vp.setCurrentItem(1);
+            }
+        });
 
         return view;
     }
@@ -164,14 +175,14 @@ public class MonsterListFragment extends Fragment implements FilterDialogFragmen
     private void showInfoDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         InfoDialogFragment dialog = InfoDialogFragment.newInstance("Difficulty");
-        dialog.show(fm, "fragment_dialog_info");
+        dialog.show(fm, "dialog_info");
     }
 
     private void showFilterDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FilterDialogFragment dialog = FilterDialogFragment.newInstance("Filters");
         dialog.setTargetFragment(MonsterListFragment.this, 300);
-        dialog.show(fm, "fragment_dialog_filter");
+        dialog.show(fm, "dialog_filter");
     }
 
     @Override

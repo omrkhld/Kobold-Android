@@ -69,7 +69,7 @@ public class AddPlayerDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_add_player, container);
+        View view = inflater.inflate(R.layout.dialog_add_player, container);
         ButterKnife.bind(this, view);
 
         ArrayList<String> categories = new ArrayList<String>();

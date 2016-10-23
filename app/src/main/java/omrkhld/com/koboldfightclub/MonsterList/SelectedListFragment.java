@@ -2,6 +2,7 @@ package omrkhld.com.koboldfightclub.MonsterList;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,6 +48,7 @@ public class SelectedListFragment extends Fragment {
 
     @BindView(R.id.selected_list_view) RecyclerView list;
     @BindView(R.id.list_fab) FloatingActionButton fab;
+    @BindView(R.id.layout) RelativeLayout layout;
 
     public static SelectedListFragment newInstance() {
         SelectedListFragment fragment = new SelectedListFragment();
@@ -60,7 +63,7 @@ public class SelectedListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_list, container, false);
         ButterKnife.bind(this, view);
@@ -89,6 +92,8 @@ public class SelectedListFragment extends Fragment {
                     }
                     EventBus.getDefault().post(new SubmitEvent(monsters));
                     getActivity().finish();
+                } else {
+                    Snackbar.make(layout, "No monsters selected!", Snackbar.LENGTH_SHORT);
                 }
             }
         });
@@ -153,7 +158,7 @@ public class SelectedListFragment extends Fragment {
     private void showInfoDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         InfoDialogFragment infoDialogFragment = InfoDialogFragment.newInstance("Difficulty");
-        infoDialogFragment.show(fm, "fragment_dialog_info");
+        infoDialogFragment.show(fm, "dialog_info");
     }
 
     public class SubmitEvent {

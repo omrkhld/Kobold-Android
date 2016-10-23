@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -27,7 +28,7 @@ import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.POJO.Player;
 import omrkhld.com.koboldfightclub.R;
 
-public class RunActivity extends AppCompatActivity {
+public class RunActivity extends AppCompatActivity implements EditCombatantDialogFragment.EditCombatantDialogListener {
 
     public static final String TAG = "RunActivity";
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -96,42 +97,46 @@ public class RunActivity extends AppCompatActivity {
         playerResults = playersRealm.where(Player.class).findAll();
         monsterResults = monstersRealm.where(Monster.class).findAll();
 
-        for (Player p : playerResults) {
-            Combatant c = new Combatant();
-            c.setName(p.getName());
-            c.setHP(p.getHP());
-            c.setInitMod(p.getInitMod());
-            combatants.add(c);
-        }
-
-        for (Monster m : monsterResults) {
-            if (monsterCounts.containsKey(m.getName())) {
-                int count = monsterCounts.get(m.getName());
-                monsterCounts.put(m.getName(), count+1);
-            } else {
-                monsterCounts.put(m.getName(), 1);
+        if (!playerResults.isEmpty()) {
+            for (Player p : playerResults) {
+                Combatant c = new Combatant();
+                c.setName(p.getName());
+                c.setHP(p.getHP());
+                c.setInitMod(p.getInitMod());
+                combatants.add(c);
             }
         }
 
-        int count = 1;
-        String prevName = monsterResults.get(0).getName();
+        if (!monsterResults.isEmpty()) {
+            for (Monster m : monsterResults) {
+                if (monsterCounts.containsKey(m.getName())) {
+                    int count = monsterCounts.get(m.getName());
+                    monsterCounts.put(m.getName(), count+1);
+                } else {
+                    monsterCounts.put(m.getName(), 1);
+                }
+            }
 
-        for (Monster m : monsterResults) {
-            Combatant c = new Combatant();
-            if (monsterCounts.get(m.getName()) > 1) {
-                if (!m.getName().equals(prevName)) {
-                    count = 1;
+            int count = 1;
+            String prevName = monsterResults.get(0).getName();
+
+            for (Monster m : monsterResults) {
+                Combatant c = new Combatant();
+                if (monsterCounts.get(m.getName()) > 1) {
+                    if (!m.getName().equals(prevName)) {
+                        count = 1;
+                        prevName = m.getName();
+                    }
+                    c.setName(m.getName() + " " + String.valueOf(count));
+                    count++;
+                } else {
+                    c.setName(m.getName());
                     prevName = m.getName();
                 }
-                c.setName(m.getName() + " " + String.valueOf(count));
-                count++;
-            } else {
-                c.setName(m.getName());
-                prevName = m.getName();
+                c.setHP(m.getHP());
+                c.setInitMod(m.getInit());
+                combatants.add(c);
             }
-            c.setHP(m.getHP());
-            c.setInitMod(m.getInit());
-            combatants.add(c);
         }
     }
 
@@ -143,6 +148,31 @@ public class RunActivity extends AppCompatActivity {
             init += Integer.valueOf(c.getInitMod());
             c.setInit(init);
         }
+
+        Collections.sort(combatants, new Comparator<Combatant>() {
+            @Override
+            public int compare(Combatant c1, Combatant c2) {
+                if (c2.getInit() - c1.getInit() == 0) {
+                    return Integer.valueOf(c2.getInitMod()) - Integer.valueOf(c1.getInitMod());
+                }
+                return c2.getInit() - c1.getInit();
+            }
+        });
+        list.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFinishEditing(Combatant combatant) {
+        Iterator<Combatant> iter = combatants.iterator();
+
+        while (iter.hasNext()) {
+            Combatant c = iter.next();
+            if (c.getName().equals(combatant.getName())) {
+                iter.remove();
+            }
+        }
+
+        combatants.add(combatant);
 
         Collections.sort(combatants, new Comparator<Combatant>() {
             @Override

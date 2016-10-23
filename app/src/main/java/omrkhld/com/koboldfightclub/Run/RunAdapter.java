@@ -51,8 +51,7 @@ public class RunAdapter extends RecyclerView.Adapter<RunAdapter.ViewHolder> {
             public void onClick(View v) {
                 FragmentManager fm = activity.getSupportFragmentManager();
                 EditCombatantDialogFragment dialog = EditCombatantDialogFragment.newInstance("Edit Combatant", combatant);
-                dialog.setTargetFragment(fm.findFragmentById(R.id.view_pager), 300);
-                dialog.show(fm, "fragment_dialog_add_player");
+                dialog.show(fm, "dialog_edit_combatant");
             }
         });
     }

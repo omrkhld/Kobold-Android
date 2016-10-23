@@ -75,7 +75,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AddPlayerDialogFragment dialog = AddPlayerDialogFragment.newInstance("Add Player", null);
                 dialog.setTargetFragment(PCManagerFragment.this, 300);
-                dialog.show(fm, "fragment_dialog_add_player");
+                dialog.show(fm, "dialog_add_player");
                 updateList();
             }
         });

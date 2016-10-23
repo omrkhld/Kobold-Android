@@ -47,7 +47,7 @@ public class PCRealmAdapter extends RealmRecyclerViewAdapter<Player, PCRealmAdap
                 FragmentManager fm = activity.getSupportFragmentManager();
                 AddPlayerDialogFragment dialog = AddPlayerDialogFragment.newInstance("Add Player", player);
                 dialog.setTargetFragment(fm.findFragmentById(R.id.view_pager), 300);
-                dialog.show(fm, "fragment_dialog_add_player");
+                dialog.show(fm, "dialog_add_player");
             }
         });
     }
