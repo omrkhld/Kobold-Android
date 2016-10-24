@@ -63,7 +63,6 @@
 
     <string-array name="alignment_array">
         <item>All</item>
-        <item>Any</item>
         <item>Any Chaotic</item>
         <item>Any Evil</item>
         <item>Any Good</item>

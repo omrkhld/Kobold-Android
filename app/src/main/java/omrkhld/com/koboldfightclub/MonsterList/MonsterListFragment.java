@@ -159,10 +159,16 @@ public class MonsterListFragment extends Fragment implements FilterDialogFragmen
     private RealmResults<Monster> buildQuery(RealmQuery<Monster> query) {
         query.contains("size", conditions[0], Case.INSENSITIVE)
                 .contains("type", conditions[1], Case.INSENSITIVE)
-                .contains("alignment", conditions[2], Case.INSENSITIVE)
                 .greaterThanOrEqualTo("cr", Float.parseFloat(conditions[3]))
                 .lessThanOrEqualTo("cr", Float.parseFloat(conditions[4]));
 
+        if (conditions[2].isEmpty()) {
+            query.contains("alignment", conditions[2], Case.INSENSITIVE);
+        } else {
+            query.contains("alignment", conditions[2], Case.INSENSITIVE)
+                    .or()
+                    .contains("alignment", "any", Case.INSENSITIVE);
+        }
         return query.findAllAsync();
     }
 

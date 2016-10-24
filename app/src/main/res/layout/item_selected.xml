@@ -20,9 +20,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="200dp"
                 android:textColor="@android:color/black"
                 android:text="Name"
                 android:textSize="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:id="@+id/monster_name"/>
 
             <TextView

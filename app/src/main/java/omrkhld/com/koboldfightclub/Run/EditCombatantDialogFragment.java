@@ -69,28 +69,31 @@ public class EditCombatantDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 try {
                     initString = initWrapper.getEditText().getText().toString();
-                    if (TextUtils.isEmpty(initString)) {
-                        initWrapper.setError("Init Modifier is empty!");
-                    } else init = Integer.parseInt(initString);
-
                     hpString = hpWrapper.getEditText().getText().toString();
+
                     if (TextUtils.isEmpty(hpString)) {
                         hpWrapper.setError("HP is empty!");
-                    } else hp = Integer.parseInt(hpString);
-
-                    if (!TextUtils.isDigitsOnly(hpString)) {
+                    } else if (TextUtils.isEmpty(initString)) {
+                        initWrapper.setError("Initiative is empty!");
+                    } else if (!TextUtils.isDigitsOnly(hpString)) {
                         hpWrapper.setError("Not a number!");
-                    } else if (hp < 1) {
-                        hpWrapper.setError("HP too low!");
-                    } else if (init < 0) {
-                        initWrapper.setError("Initative too low!");
+                    } else if (!TextUtils.isDigitsOnly(initString)) {
+                        initWrapper.setError("Not a number!");
                     } else {
-                        Combatant combatant = new Combatant();
-                        combatant.setName(originalC.getName());
-                        combatant.setInitMod(originalC.getInitMod());
-                        combatant.setInit(init);
-                        combatant.setHP(hp);
-                        sendBackResult(combatant);
+                        init = Integer.parseInt(initString);
+                        hp = Integer.parseInt(hpString);
+                        if (hp < 1) {
+                            hpWrapper.setError("HP too low!");
+                        } else if (init < 0) {
+                            initWrapper.setError("Initative too low!");
+                        } else {
+                            Combatant combatant = new Combatant();
+                            combatant.setName(originalC.getName());
+                            combatant.setInitMod(originalC.getInitMod());
+                            combatant.setInit(init);
+                            combatant.setHP(hp);
+                            sendBackResult(combatant);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();

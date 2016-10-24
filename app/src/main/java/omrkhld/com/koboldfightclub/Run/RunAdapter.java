@@ -34,7 +34,7 @@ public class RunAdapter extends RecyclerView.Adapter<RunAdapter.ViewHolder> {
     public RunAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.fragment_combatant, parent, false);
+        View view = inflater.inflate(R.layout.item_combatant, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

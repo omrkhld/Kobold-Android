@@ -13,7 +13,7 @@ public class Combatant {
         name = "";
         initMod = "0";
         init = 1;
-        hp = 1;
+        hp = 0;
     }
 
     public String getName() { return name; }

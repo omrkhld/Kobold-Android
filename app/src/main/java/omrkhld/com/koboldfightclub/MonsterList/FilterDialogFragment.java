@@ -89,9 +89,50 @@ public class FilterDialogFragment extends DialogFragment {
                 editor.putInt("minPos", minSpinner.getSelectedItemPosition());
                 editor.putInt("maxPos", maxSpinner.getSelectedItemPosition());
                 editor.apply();
+                String selectedAlignment = alignmentSpinner.getSelectedItem().toString();
+                if (selectedAlignment.equals("Any Chaotic")) {
+                    selectedAlignment = "C";
+                } else if (selectedAlignment.equals("Any Evil")) {
+                    selectedAlignment = "E";
+                } else if (selectedAlignment.equals("Any Good")) {
+                    selectedAlignment = "G";
+                } else if (selectedAlignment.equals("Any Lawful")) {
+                    selectedAlignment = "L";
+                } else if (selectedAlignment.equals("Any Neutral")) {
+                    selectedAlignment = "N";
+                } else if (selectedAlignment.equals("Chaotic Evil")) {
+                    selectedAlignment = "CE";
+                } else if (selectedAlignment.equals("Chaotic Good")) {
+                    selectedAlignment = "CG";
+                } else if (selectedAlignment.equals("Chaotic Neutral")) {
+                    selectedAlignment = "CN";
+                } else if (selectedAlignment.equals("Lawful Evil")) {
+                    selectedAlignment = "LE";
+                } else if (selectedAlignment.equals("Lawful Good")) {
+                    selectedAlignment = "LG";
+                } else if (selectedAlignment.equals("Lawful Neutral")) {
+                    selectedAlignment = "LN";
+                } else if (selectedAlignment.equals("Neutral Evil")) {
+                    selectedAlignment = "NE";
+                } else if (selectedAlignment.equals("Neutral Good")) {
+                    selectedAlignment = "NG";
+                } else if (selectedAlignment.equals("Neutral")) {
+                    selectedAlignment = "N";
+                }  else if (selectedAlignment.equals("Non-Chaotic")) {
+                    selectedAlignment = "!C";
+                } else if (selectedAlignment.equals("Non-Evil")) {
+                    selectedAlignment = "!E";
+                } else if (selectedAlignment.equals("Non-Good")) {
+                    selectedAlignment = "!G";
+                } else if (selectedAlignment.equals("Non-Lawful")) {
+                    selectedAlignment = "!L";
+                } else if (selectedAlignment.equals("Unaligned")) {
+                    selectedAlignment = "U";
+                }
+
                 sendBackFilters(sizeSpinner.getSelectedItem().toString(),
                         typeSpinner.getSelectedItem().toString(),
-                        alignmentSpinner.getSelectedItem().toString(),
+                        selectedAlignment,
                         minSpinner.getSelectedItem().toString(),
                         maxSpinner.getSelectedItem().toString());
             }

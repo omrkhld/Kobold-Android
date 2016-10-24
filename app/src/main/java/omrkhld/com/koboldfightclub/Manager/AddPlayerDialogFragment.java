@@ -118,48 +118,46 @@ public class AddPlayerDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 try {
                     levelString = levelWrapper.getEditText().getText().toString();
-                    if (TextUtils.isEmpty(levelString)) {
-                        levelWrapper.setError("Level is empty!");
-                    } else level = Integer.parseInt(levelString);
-
                     init = initWrapper.getEditText().getText().toString();
-                    if (TextUtils.isEmpty(init)) {
-                        initWrapper.setError("Init Modifier is empty!");
-                    }
-
                     hpString = hpWrapper.getEditText().getText().toString();
-                    if (TextUtils.isEmpty(hpString)) {
-                        hpWrapper.setError("HP is empty!");
-                    } else hp = Integer.parseInt(hpString);
-
                     name = nameWrapper.getEditText().getText().toString();
 
                     if (TextUtils.isEmpty(name)) {
                         nameWrapper.setError("Name is empty!");
-                    } else if (!TextUtils.isDigitsOnly(levelString)) {
-                        levelWrapper.setError("Not a number!");
-                    } else if (level > 20) {
-                        levelWrapper.setError("Level too high!");
-                    } else if (level < 1) {
-                        levelWrapper.setError("Level too low!");
-                    } else if (!TextUtils.isDigitsOnly(hpString)) {
-                        hpWrapper.setError("Not a number!");
-                    } else if (hp < 1) {
-                        hpWrapper.setError("HP too low!");
+                    } else if (TextUtils.isEmpty(levelString)) {
+                        levelWrapper.setError("Level is empty!");
+                    } else if (TextUtils.isEmpty(init)) {
+                        initWrapper.setError("Init Modifier is empty!");
+                    } else if (TextUtils.isEmpty(hpString)) {
+                        hpWrapper.setError("HP is empty!");
                     } else {
-                        Player player = new Player();
-                        player.setName(name);
-                        player.setInitMod(init);
-                        player.setLevel(level);
-                        player.setHP(hp);
-                        //player.setParty(partySpinner.getSelectedItem().toString());
-                        ArrayList<ArrayList<Integer>> thresh = XPThresholdsSingleton.getInstance().getThresholds();
-                        ArrayList<Integer> row = thresh.get(level-1);
-                        player.setEasy(row.get(0));
-                        player.setMed(row.get(1));
-                        player.setHard(row.get(2));
-                        player.setDeadly(row.get(3));
-                        sendBackResult(player);
+                        level = Integer.parseInt(levelString);
+                        hp = Integer.parseInt(hpString);
+                        if (!TextUtils.isDigitsOnly(levelString)) {
+                            levelWrapper.setError("Not a number!");
+                        } else if (level > 20) {
+                            levelWrapper.setError("Level too high!");
+                        } else if (level < 1) {
+                            levelWrapper.setError("Level too low!");
+                        } else if (!TextUtils.isDigitsOnly(hpString)) {
+                            hpWrapper.setError("Not a number!");
+                        } else if (hp < 1) {
+                            hpWrapper.setError("HP too low!");
+                        } else {
+                            Player player = new Player();
+                            player.setName(name);
+                            player.setInitMod(init);
+                            player.setLevel(level);
+                            player.setHP(hp);
+                            //player.setParty(partySpinner.getSelectedItem().toString());
+                            ArrayList<ArrayList<Integer>> thresh = XPThresholdsSingleton.getInstance().getThresholds();
+                            ArrayList<Integer> row = thresh.get(level-1);
+                            player.setEasy(row.get(0));
+                            player.setMed(row.get(1));
+                            player.setHard(row.get(2));
+                            player.setDeadly(row.get(3));
+                            sendBackResult(player);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
