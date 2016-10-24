@@ -36,7 +36,8 @@ public class EditMonsterDialogFragment extends DialogFragment {
     @BindView(R.id.hd) TextView hitDice;
     @BindView(R.id.add) TextView additionalHP;
     @BindView(R.id.avg) TextView avgHP;
-    @BindView(R.id.roll_button) Button rollButton;
+    @BindView(R.id.roll_init_button) Button rollInitButton;
+    @BindView(R.id.roll_hp_button) Button rollHPButton;
     @BindView(R.id.confirm_edit) Button confirmButton;
 
     public String hpString, initString;
@@ -80,7 +81,17 @@ public class EditMonsterDialogFragment extends DialogFragment {
         additionalHP.setText(Integer.toString(add));
         avgHP.setText(Integer.toString(originalC.getAvg()));
 
-        rollButton.setOnClickListener(new View.OnClickListener() {
+        rollInitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random random = new Random();
+                int i = random.nextInt(20) + 1;
+                i += Integer.valueOf(originalC.initMod);
+                initWrapper.getEditText().setText(Integer.toString(init));
+            }
+        });
+
+        rollHPButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Random random = new Random();

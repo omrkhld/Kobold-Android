@@ -50,4 +50,13 @@ public class MonsterListActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    public void onBackPressed() {
+        if(pager.getCurrentItem() != 0) {
+            pager.setCurrentItem(0, true);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class FilterDialogFragment extends DialogFragment {
         filters = getActivity().getSharedPreferences(getString(R.string.pref_filters), 0);
         sizePos = filters.getInt("sizePos", 0);
         typePos = filters.getInt("typePos", 0);
-        alignmentPos = filters.getInt("alignmentPost", 0);
+        alignmentPos = filters.getInt("alignmentPos", 0);
         minPos = filters.getInt("minPos", 0);
         maxPos = filters.getInt("maxPos", 33);
     }
@@ -117,7 +118,7 @@ public class FilterDialogFragment extends DialogFragment {
                 } else if (selectedAlignment.equals("Neutral Good")) {
                     selectedAlignment = "NG";
                 } else if (selectedAlignment.equals("Neutral")) {
-                    selectedAlignment = "N";
+                    selectedAlignment = "*N";
                 }  else if (selectedAlignment.equals("Non-Chaotic")) {
                     selectedAlignment = "!C";
                 } else if (selectedAlignment.equals("Non-Evil")) {

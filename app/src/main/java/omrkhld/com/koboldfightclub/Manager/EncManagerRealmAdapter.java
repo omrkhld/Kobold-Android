@@ -33,7 +33,7 @@ public class EncManagerRealmAdapter extends RealmRecyclerViewAdapter<Monster, En
         super(activity, data, true);
         this.activity = activity;
         xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
-        numPlayers = xpThresholds.getInt("numPlayers", 1);
+        numPlayers = xpThresholds.getInt("numPlayers", 4);
         easy = xpThresholds.getInt("easy", 25);
         med = xpThresholds.getInt("med", 50);
         hard = xpThresholds.getInt("hard", 75);

@@ -11,35 +11,44 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="48dp"
         android:padding="8dp"
+        android:background="@color/cardview_dark_background"
         android:id="@+id/headers">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="56dp"
             android:orientation="horizontal"
             android:id="@+id/linear_top">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text="Name"/>
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:text="Name \u2193"
+                android:clickable="true"
+                android:id="@+id/sort_by_name"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:gravity="center"
-                android:textColor="@android:color/black"
-                android:text="CR"/>
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:text="CR"
+                android:clickable="true"
+                android:id="@+id/sort_by_cr"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linear_top"
+            android:layout_marginRight="56dp"
             android:orientation="horizontal"
             android:id="@+id/linear_bottom">
 
@@ -48,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:layout_marginRight="12dp"
-                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
                 android:text="Qty"/>
 
             <TextView
@@ -56,25 +66,42 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:gravity="center_horizontal"
-                android:textColor="@android:color/black"
-                android:textSize="16dp"
-                android:text="Type"/>
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:text="Type"
+                android:clickable="true"
+                android:id="@+id/sort_by_type"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:gravity="center_horizontal"
-                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
                 android:text="Alignment"
-                android:id="@+id/textView" />
+                android:clickable="true"
+                android:id="@+id/sort_by_alignment"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="Source"/>
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:text="Source"
+                android:clickable="true"
+                android:id="@+id/sort_by_src"/>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/circle"
+            android:backgroundTint="@color/cardview_dark_background"/>
     </RelativeLayout>
 
     <ImageView

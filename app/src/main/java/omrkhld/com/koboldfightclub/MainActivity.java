@@ -89,4 +89,13 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if(pager.getCurrentItem() != 0) {
+            pager.setCurrentItem(0, true);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package omrkhld.com.koboldfightclub.Manager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,10 +45,15 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.list) RecyclerView list;
     @BindView(R.id.enc_fab) FloatingActionButton fab;
     @BindView(R.id.text_view) TextView text;
+    @BindView(R.id.linear_layout) LinearLayout linearLayout;
+    @BindView(R.id.total_xp) TextView totalText;
+    @BindView(R.id.adjusted_xp) TextView adjustedText;
 
     private RealmConfiguration encConfig;
     private Realm realm;
     public RealmResults<Monster> results;
+    private SharedPreferences xpThresholds;
+    private int numPlayers;
 
     public static EncManagerFragment newInstance() {
         EncManagerFragment fragment = new EncManagerFragment();
@@ -57,6 +64,8 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        xpThresholds = getActivity().getSharedPreferences(getString(R.string.pref_party_threshold), 0);
+        numPlayers = xpThresholds.getInt("numPlayers", 4);
     }
 
     @Override
@@ -106,7 +115,6 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
                         results.deleteFromRealm(position);
                     }
                 });
-                //updateList();
                 list.getAdapter().notifyItemRemoved(position);
                 Snackbar.make(getView(), "Undo delete?", Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener() {
@@ -115,7 +123,6 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
                                 realm.beginTransaction();
                                 realm.copyToRealm(p);
                                 realm.commitTransaction();
-                                //updateList();
                                 list.getAdapter().notifyItemInserted(position);
                                 results = realm.where(Monster.class).findAll().sort("name");
                                 checkEmpty(results);
@@ -124,6 +131,7 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
                         .show();
 
                 checkEmpty(results);
+                adjustExp(results);
             }
 
             @Override
@@ -187,14 +195,6 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         realm = Realm.getInstance(encConfig);
     }
 
-    public void checkEmpty(RealmResults<Monster> r) {
-        if (r.isEmpty()) {
-            text.setVisibility(View.VISIBLE);
-        } else {
-            text.setVisibility(View.GONE);
-        }
-    }
-
     @Subscribe
     public void addToRealm(SelectedListFragment.SubmitEvent event) {
         RealmList<Monster> monsters = event.monsters;
@@ -230,5 +230,84 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         list.setAdapter(new EncManagerRealmAdapter((AppCompatActivity)getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
         checkEmpty(results);
+        adjustExp(results);
+    }
+
+    public void checkEmpty(RealmResults<Monster> r) {
+        if (r.isEmpty()) {
+            text.setVisibility(View.VISIBLE);
+            linearLayout.setVisibility(View.GONE);
+        } else {
+            text.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void adjustExp(RealmResults<Monster> r) {
+        int totalExp = 0;
+        double adjustedExp = 0;
+        for (Monster m : r) {
+            totalExp += m.getExp();
+        }
+        if (r.size() == 2) {
+            adjustedExp = totalExp * 1.5;
+        } else if (r.size() <= 6) {
+            adjustedExp = totalExp * 2;
+        } else if (r.size() <= 10) {
+            adjustedExp = totalExp * 2.5;
+        } else if (r.size() <= 14) {
+            adjustedExp = totalExp * 3;
+        } else if (r.size() > 14) {
+            adjustedExp = totalExp * 4;
+        } else {
+            adjustedExp = totalExp;
+        }
+
+        if (numPlayers < 3) {
+            if (r.size() == 1) {
+                adjustedExp = totalExp * 1.5;
+            } else if (r.size() == 2) {
+                adjustedExp = totalExp * 2;
+            } else if (r.size() <= 6) {
+                adjustedExp = totalExp * 2.5;
+            } else if (r.size() <= 10) {
+                adjustedExp = totalExp * 3;
+            } else if (r.size() <= 14) {
+                adjustedExp = totalExp * 4;
+            } else if (r.size() > 14) {
+                adjustedExp = totalExp * 5;
+            }
+        } else if (numPlayers > 5) {
+            if (r.size() == 1) {
+                adjustedExp = totalExp * 0.5;
+            } else if (r.size() == 2) {
+                adjustedExp = totalExp;
+            } else if (r.size() <= 6) {
+                adjustedExp = totalExp * 1.5;
+            } else if (r.size() <= 10) {
+                adjustedExp = totalExp * 2;
+            } else if (r.size() <= 14) {
+                adjustedExp = totalExp * 2.5;
+            } else if (r.size() > 14) {
+                adjustedExp = totalExp * 3;
+            }
+        } else {
+            if (r.size() == 2) {
+                adjustedExp = totalExp * 1.5;
+            } else if (r.size() <= 6) {
+                adjustedExp = totalExp * 2;
+            } else if (r.size() <= 10) {
+                adjustedExp = totalExp * 2.5;
+            } else if (r.size() <= 14) {
+                adjustedExp = totalExp * 3;
+            } else if (r.size() > 14) {
+                adjustedExp = totalExp * 4;
+            } else {
+                adjustedExp = totalExp;
+            }
+        }
+
+        totalText.setText(Integer.toString(totalExp));
+        adjustedText.setText(Integer.toString((int) adjustedExp));
     }
 }

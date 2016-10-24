@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import omrkhld.com.koboldfightclub.POJO.CombatantPlayer;
@@ -29,8 +31,8 @@ public class EditPlayerDialogFragment extends DialogFragment {
     @BindView(R.id.init_edit) EditText initEdit;
     @BindView(R.id.hp_wrapper) TextInputLayout hpWrapper;
     @BindView(R.id.hp_edit) EditText hpEdit;
-    @BindView(R.id.confirm_edit)
-    Button confirmButton;
+    @BindView(R.id.roll_init_button) Button rollInitButton;
+    @BindView(R.id.confirm_edit) Button confirmButton;
 
     public String hpString, initString;
     public int hp = 1, init = 1;
@@ -64,6 +66,16 @@ public class EditPlayerDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_edit_player, container);
         ButterKnife.bind(this, view);
+
+        rollInitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random random = new Random();
+                int i = random.nextInt(20) + 1;
+                i += Integer.valueOf(originalC.initMod);
+                initWrapper.getEditText().setText(Integer.toString(init));
+            }
+        });
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override

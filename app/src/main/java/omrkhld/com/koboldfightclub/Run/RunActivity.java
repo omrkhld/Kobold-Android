@@ -50,7 +50,10 @@ public class RunActivity extends AppCompatActivity implements EditPlayerDialogFr
         setContentView(R.layout.activity_run);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.app_name));
+
         combatants = new ArrayList<>();
         monsterCounts = new HashMap<>();
         initCombatants();
@@ -76,6 +79,9 @@ public class RunActivity extends AppCompatActivity implements EditPlayerDialogFr
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.home:
+                onBackPressed();
+                return true;
             case R.id.reroll:
                 rollInit();
                 return true;

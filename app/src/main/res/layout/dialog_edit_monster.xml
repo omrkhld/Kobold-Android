@@ -39,8 +39,9 @@
             android:src="@drawable/ic_init"/>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.1"
             android:layout_marginLeft="8dp"
             android:hint="Initative"
             android:id="@+id/init_wrapper">
@@ -51,6 +52,12 @@
                 android:inputType="numberSigned"
                 android:id="@+id/init_edit"/>
         </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll"
+            android:id="@+id/roll_init_button"/>
     </LinearLayout>
 
     <LinearLayout
@@ -84,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Roll"
-            android:id="@+id/roll_button"/>
+            android:id="@+id/roll_hp_button"/>
     </LinearLayout>
 
     <LinearLayout
