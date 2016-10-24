@@ -14,16 +14,20 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import omrkhld.com.koboldfightclub.POJO.Combatant;
+import omrkhld.com.koboldfightclub.POJO.CombatantMonster;
+import omrkhld.com.koboldfightclub.POJO.CombatantPlayer;
 import omrkhld.com.koboldfightclub.R;
 
 /**
  * Created by Omar on 22/10/2016.
  */
 
-public class RunAdapter extends RecyclerView.Adapter<RunAdapter.ViewHolder> {
+public class RunAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final AppCompatActivity activity;
     private ArrayList<Combatant> combatants;
+
+    private final int PC = 0, MON = 1;
 
     public RunAdapter(AppCompatActivity activity, ArrayList<Combatant> combatants) {
         this.activity = activity;
@@ -31,48 +35,88 @@ public class RunAdapter extends RecyclerView.Adapter<RunAdapter.ViewHolder> {
     }
 
     @Override
-    public RunAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        if (combatants.get(position) instanceof CombatantPlayer) {
+            return PC;
+        } else if (combatants.get(position) instanceof CombatantMonster) {
+            return MON;
+        }
+        return -1;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder;
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_combatant, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        switch (viewType) {
+            case PC:
+                View vp = inflater.inflate(R.layout.item_combatant_player, parent, false);
+                viewHolder = new PlayerViewHolder(vp);
+                break;
+            case MON:
+                View vm = inflater.inflate(R.layout.item_combatant_monster, parent, false);
+                viewHolder = new MonsterViewHolder(vm);
+                break;
+            default:
+                viewHolder = null;
+                break;
+        }
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RunAdapter.ViewHolder holder, int position) {
-        final Combatant combatant = combatants.get(position);
-        holder.name.setText(combatant.getName());
-        holder.initMod.setText(combatant.getInitMod());
-        holder.init.setText(Integer.toString(combatant.getInit()));
-        holder.hp.setText(Integer.toString(combatant.getHP()));
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = activity.getSupportFragmentManager();
-                EditCombatantDialogFragment dialog = EditCombatantDialogFragment.newInstance("Edit Combatant", combatant);
-                dialog.show(fm, "dialog_edit_combatant");
-            }
-        });
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        switch(holder.getItemViewType()) {
+            case PC:
+                PlayerViewHolder vp = (PlayerViewHolder) holder;
+                configurePlayerViewHolder(vp, position);
+                break;
+            case MON:
+                MonsterViewHolder vm = (MonsterViewHolder) holder;
+                configureMonsterViewHolder(vm, position);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void configurePlayerViewHolder(PlayerViewHolder vp, int position) {
+        final CombatantPlayer p = (CombatantPlayer) combatants.get(position);
+        if (p != null) {
+            vp.name.setText(p.name);
+            vp.init.setText(Integer.toString(p.init));
+            vp.hp.setText(Integer.toString(p.hp));
+            vp.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fm = activity.getSupportFragmentManager();
+                    EditPlayerDialogFragment dialog = EditPlayerDialogFragment.newInstance("Edit Player", p);
+                    dialog.show(fm, "dialog_edit_player");
+                }
+            });
+        }
+    }
+
+    private void configureMonsterViewHolder(MonsterViewHolder vm, int position) {
+        final CombatantMonster m = (CombatantMonster) combatants.get(position);
+        if (m != null) {
+            vm.name.setText(m.name);
+            vm.init.setText(Integer.toString(m.init));
+            vm.hp.setText(Integer.toString(m.hp));
+            vm.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fm = activity.getSupportFragmentManager();
+                    EditMonsterDialogFragment dialog = EditMonsterDialogFragment.newInstance("Edit Monster", m);
+                    dialog.show(fm, "dialog_edit_monster");
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return combatants.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-
-        @BindView(R.id.combatant_name) TextView name;
-        @BindView(R.id.combatant_init_mod) TextView initMod;
-        @BindView(R.id.combatant_init) TextView init;
-        @BindView(R.id.combatant_hp) TextView hp;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-            ButterKnife.bind(this, itemView);
-        }
     }
 }

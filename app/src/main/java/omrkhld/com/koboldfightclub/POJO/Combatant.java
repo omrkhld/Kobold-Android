@@ -6,8 +6,8 @@ package omrkhld.com.koboldfightclub.POJO;
 
 public class Combatant {
 
-    private String name, initMod;
-    private int init, hp;
+    public String name, initMod;
+    public int init, hp;
 
     public Combatant() {
         name = "";
@@ -15,11 +15,6 @@ public class Combatant {
         init = 1;
         hp = 0;
     }
-
-    public String getName() { return name; }
-    public String getInitMod() { return initMod; }
-    public int getInit() { return init; }
-    public int getHP() { return hp; }
 
     public void setName(String n) { name = n; }
     public void setInitMod(String i) { initMod = i; }

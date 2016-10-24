@@ -14,32 +14,33 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import omrkhld.com.koboldfightclub.POJO.Combatant;
+import omrkhld.com.koboldfightclub.POJO.CombatantPlayer;
 import omrkhld.com.koboldfightclub.R;
 
 /**
- * Created by Omar on 22/10/2016.
+ * Created by Omar on 24/10/2016.
  */
 
-public class EditCombatantDialogFragment extends DialogFragment {
+public class EditPlayerDialogFragment extends DialogFragment {
 
-    public static final String TAG = "EditCombatantFragment";
+    public static final String TAG = "EditPlayerFragment";
     @BindView(R.id.name_text) TextView nameText;
     @BindView(R.id.init_wrapper) TextInputLayout initWrapper;
     @BindView(R.id.init_edit) EditText initEdit;
     @BindView(R.id.hp_wrapper) TextInputLayout hpWrapper;
     @BindView(R.id.hp_edit) EditText hpEdit;
-    @BindView(R.id.confirm_edit) Button confirmButton;
+    @BindView(R.id.confirm_edit)
+    Button confirmButton;
 
     public String hpString, initString;
     public int hp = 1, init = 1;
-    public static Combatant originalC;
+    public static CombatantPlayer originalC;
 
-    public EditCombatantDialogFragment() {
+    public EditPlayerDialogFragment() {
     }
 
-    public static EditCombatantDialogFragment newInstance(String title, Combatant cOld) {
-        EditCombatantDialogFragment frag = new EditCombatantDialogFragment();
+    public static EditPlayerDialogFragment newInstance(String title, CombatantPlayer cOld) {
+        EditPlayerDialogFragment frag = new EditPlayerDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -61,7 +62,7 @@ public class EditCombatantDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_edit_combatant, container);
+        View view = inflater.inflate(R.layout.dialog_edit_player, container);
         ButterKnife.bind(this, view);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -87,12 +88,12 @@ public class EditCombatantDialogFragment extends DialogFragment {
                         } else if (init < 0) {
                             initWrapper.setError("Initative too low!");
                         } else {
-                            Combatant combatant = new Combatant();
-                            combatant.setName(originalC.name);
-                            combatant.setInitMod(originalC.initMod);
-                            combatant.setInit(init);
-                            combatant.setHP(hp);
-                            sendBackResult(combatant);
+                            CombatantPlayer player = new CombatantPlayer();
+                            player.setName(originalC.name);
+                            player.setInitMod(originalC.initMod);
+                            player.setInit(init);
+                            player.setHP(hp);
+                            sendBackResult(player);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -108,7 +109,7 @@ public class EditCombatantDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Fetch arguments from bundle and set title
-        String title = getArguments().getString("title", "Edit Combatant");
+        String title = getArguments().getString("title", "Edit Player");
         getDialog().setTitle(title);
 
         nameText.setText(originalC.name);
@@ -116,15 +117,15 @@ public class EditCombatantDialogFragment extends DialogFragment {
         initWrapper.getEditText().setText(Integer.toString(originalC.init));
     }
 
-    public interface EditCombatantDialogListener {
-        void onFinishEditing(Combatant combatant);
+    public interface EditPlayerDialogListener {
+        void onFinishEditingPlayer(CombatantPlayer player);
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult(Combatant combatant) {
+    public void sendBackResult(CombatantPlayer player) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
-        EditCombatantDialogListener listener = (EditCombatantDialogListener) getActivity();
-        listener.onFinishEditing(combatant);
+        EditPlayerDialogFragment.EditPlayerDialogListener listener = (EditPlayerDialogFragment.EditPlayerDialogListener) getActivity();
+        listener.onFinishEditingPlayer(player);
         dismiss();
     }
 }

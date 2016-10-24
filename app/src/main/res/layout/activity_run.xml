@@ -13,67 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:orientation="horizontal"
-        android:id="@+id/headers">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.7"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Name"
-            android:id="@+id/combatant_name"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Init Mod"
-            android:id="@+id/combatant_init_mod"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Init"
-            android:id="@+id/combatant_init"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="HP"
-            android:id="@+id/combatant_hp"/>
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/headers"
-        android:src="@drawable/list_divider"/>
-
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/headers"
         android:id="@+id/recycler_view"
         app:layoutManager="LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_combatant">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

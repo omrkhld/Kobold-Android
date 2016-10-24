@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,34 +13,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import omrkhld.com.koboldfightclub.POJO.Combatant;
+import omrkhld.com.koboldfightclub.POJO.CombatantMonster;
 import omrkhld.com.koboldfightclub.R;
 
 /**
- * Created by Omar on 22/10/2016.
+ * Created by Omar on 24/10/2016.
  */
 
-public class EditCombatantDialogFragment extends DialogFragment {
+public class EditMonsterDialogFragment extends DialogFragment {
 
-    public static final String TAG = "EditCombatantFragment";
+    public static final String TAG = "EditMonsterFragment";
     @BindView(R.id.name_text) TextView nameText;
     @BindView(R.id.init_wrapper) TextInputLayout initWrapper;
     @BindView(R.id.init_edit) EditText initEdit;
     @BindView(R.id.hp_wrapper) TextInputLayout hpWrapper;
     @BindView(R.id.hp_edit) EditText hpEdit;
+    @BindView(R.id.num) TextView numHitDice;
+    @BindView(R.id.hd) TextView hitDice;
+    @BindView(R.id.add) TextView additionalHP;
+    @BindView(R.id.avg) TextView avgHP;
+    @BindView(R.id.roll_button) Button rollButton;
     @BindView(R.id.confirm_edit) Button confirmButton;
 
     public String hpString, initString;
-    public int hp = 1, init = 1;
-    public static Combatant originalC;
+    public int hp = 1, init = 1, numHD = 1, hd = 4, add = 0;
+    public static CombatantMonster originalC;
 
-    public EditCombatantDialogFragment() {
+    public EditMonsterDialogFragment() {
     }
 
-    public static EditCombatantDialogFragment newInstance(String title, Combatant cOld) {
-        EditCombatantDialogFragment frag = new EditCombatantDialogFragment();
+    public static EditMonsterDialogFragment newInstance(String title, CombatantMonster cOld) {
+        EditMonsterDialogFragment frag = new EditMonsterDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -61,8 +69,30 @@ public class EditCombatantDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_edit_combatant, container);
+        View view = inflater.inflate(R.layout.dialog_edit_monster, container);
         ButterKnife.bind(this, view);
+
+        numHD = originalC.getNumHD();
+        hd = originalC.getHD();
+        add = originalC.getAdd();
+        numHitDice.setText(Integer.toString(numHD));
+        hitDice.setText(Integer.toString(hd));
+        additionalHP.setText(Integer.toString(add));
+        avgHP.setText(Integer.toString(originalC.getAvg()));
+
+        rollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random random = new Random();
+                int roll = 0;
+                for (int i = 0; i < numHD; i++) {
+                    roll += random.nextInt(hd) + 1;
+                    Log.e(TAG, "Roll: " + roll);
+                }
+                roll += add;
+                hpWrapper.getEditText().setText(Integer.toString(roll));
+            }
+        });
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,17 +112,21 @@ public class EditCombatantDialogFragment extends DialogFragment {
                     } else {
                         init = Integer.parseInt(initString);
                         hp = Integer.parseInt(hpString);
-                        if (hp < 1) {
+                        if (hp < 0) {
                             hpWrapper.setError("HP too low!");
                         } else if (init < 0) {
                             initWrapper.setError("Initative too low!");
                         } else {
-                            Combatant combatant = new Combatant();
-                            combatant.setName(originalC.name);
-                            combatant.setInitMod(originalC.initMod);
-                            combatant.setInit(init);
-                            combatant.setHP(hp);
-                            sendBackResult(combatant);
+                            CombatantMonster monster = new CombatantMonster();
+                            monster.setName(originalC.name);
+                            monster.setInitMod(originalC.initMod);
+                            monster.setInit(init);
+                            monster.setHP(hp);
+                            monster.setNumDice(numHD);
+                            monster.setHitDice(hd);
+                            monster.setAdditionalHP(add);
+                            monster.setAvg(originalC.getAvg());
+                            sendBackResult(monster);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -116,15 +150,15 @@ public class EditCombatantDialogFragment extends DialogFragment {
         initWrapper.getEditText().setText(Integer.toString(originalC.init));
     }
 
-    public interface EditCombatantDialogListener {
-        void onFinishEditing(Combatant combatant);
+    public interface EditMonsterDialogListener {
+        void onFinishEditingMonster(CombatantMonster monster);
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult(Combatant combatant) {
+    public void sendBackResult(CombatantMonster monster) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
-        EditCombatantDialogListener listener = (EditCombatantDialogListener) getActivity();
-        listener.onFinishEditing(combatant);
+        EditMonsterDialogFragment.EditMonsterDialogListener listener = (EditMonsterDialogFragment.EditMonsterDialogListener) getActivity();
+        listener.onFinishEditingMonster(monster);
         dismiss();
     }
 }

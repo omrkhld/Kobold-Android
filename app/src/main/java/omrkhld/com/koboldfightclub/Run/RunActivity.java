@@ -24,11 +24,14 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import omrkhld.com.koboldfightclub.POJO.Combatant;
+import omrkhld.com.koboldfightclub.POJO.CombatantMonster;
+import omrkhld.com.koboldfightclub.POJO.CombatantPlayer;
 import omrkhld.com.koboldfightclub.POJO.Monster;
 import omrkhld.com.koboldfightclub.POJO.Player;
 import omrkhld.com.koboldfightclub.R;
 
-public class RunActivity extends AppCompatActivity implements EditCombatantDialogFragment.EditCombatantDialogListener {
+public class RunActivity extends AppCompatActivity implements EditPlayerDialogFragment.EditPlayerDialogListener,
+        EditMonsterDialogFragment.EditMonsterDialogListener {
 
     public static final String TAG = "RunActivity";
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -99,7 +102,7 @@ public class RunActivity extends AppCompatActivity implements EditCombatantDialo
 
         if (!playerResults.isEmpty()) {
             for (Player p : playerResults) {
-                Combatant c = new Combatant();
+                CombatantPlayer c = new CombatantPlayer();
                 c.setName(p.getName());
                 c.setHP(p.getHP());
                 c.setInitMod(p.getInitMod());
@@ -121,7 +124,7 @@ public class RunActivity extends AppCompatActivity implements EditCombatantDialo
             String prevName = monsterResults.get(0).getName();
 
             for (Monster m : monsterResults) {
-                Combatant c = new Combatant();
+                CombatantMonster c = new CombatantMonster();
                 if (monsterCounts.get(m.getName()) > 1) {
                     if (!m.getName().equals(prevName)) {
                         count = 1;
@@ -135,6 +138,10 @@ public class RunActivity extends AppCompatActivity implements EditCombatantDialo
                 }
                 c.setHP(m.getHP());
                 c.setInitMod(m.getInit());
+                c.setNumDice(m.getNumHD());
+                c.setHitDice(m.getHD());
+                c.setAdditionalHP(m.getAdd());
+                c.setAvg(m.getHP());
                 combatants.add(c);
             }
         }
@@ -145,42 +152,67 @@ public class RunActivity extends AppCompatActivity implements EditCombatantDialo
         for (Combatant c : combatants) {
             int init = random.nextInt(20) + 1;
             Log.e(TAG, "Roll: " + init);
-            init += Integer.valueOf(c.getInitMod());
+            init += Integer.valueOf(c.initMod);
             c.setInit(init);
         }
 
         Collections.sort(combatants, new Comparator<Combatant>() {
             @Override
             public int compare(Combatant c1, Combatant c2) {
-                if (c2.getInit() - c1.getInit() == 0) {
-                    return Integer.valueOf(c2.getInitMod()) - Integer.valueOf(c1.getInitMod());
+                if (c2.init - c1.init == 0) {
+                    return Integer.valueOf(c2.initMod) - Integer.valueOf(c1.initMod);
                 }
-                return c2.getInit() - c1.getInit();
+                return c2.init - c1.init;
             }
         });
         list.getAdapter().notifyDataSetChanged();
     }
 
     @Override
-    public void onFinishEditing(Combatant combatant) {
+    public void onFinishEditingPlayer(CombatantPlayer player) {
         Iterator<Combatant> iter = combatants.iterator();
 
         while (iter.hasNext()) {
             Combatant c = iter.next();
-            if (c.getName().equals(combatant.getName())) {
+            if (c.name.equals(player.name)) {
                 iter.remove();
             }
         }
 
-        combatants.add(combatant);
+        combatants.add(player);
 
         Collections.sort(combatants, new Comparator<Combatant>() {
             @Override
             public int compare(Combatant c1, Combatant c2) {
-                if (c2.getInit() - c1.getInit() == 0) {
-                    return Integer.valueOf(c2.getInitMod()) - Integer.valueOf(c1.getInitMod());
+                if (c2.init - c1.init == 0) {
+                    return Integer.valueOf(c2.initMod) - Integer.valueOf(c1.initMod);
                 }
-                return c2.getInit() - c1.getInit();
+                return c2.init - c1.init;
+            }
+        });
+        list.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFinishEditingMonster(CombatantMonster monster) {
+        Iterator<Combatant> iter = combatants.iterator();
+
+        while (iter.hasNext()) {
+            Combatant c = iter.next();
+            if (c.name.equals(monster.name)) {
+                iter.remove();
+            }
+        }
+
+        combatants.add(monster);
+
+        Collections.sort(combatants, new Comparator<Combatant>() {
+            @Override
+            public int compare(Combatant c1, Combatant c2) {
+                if (c2.init - c1.init == 0) {
+                    return Integer.valueOf(c2.initMod) - Integer.valueOf(c1.initMod);
+                }
+                return c2.init - c1.init;
             }
         });
         list.getAdapter().notifyDataSetChanged();

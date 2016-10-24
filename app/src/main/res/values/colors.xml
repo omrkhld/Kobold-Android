@@ -11,4 +11,6 @@
     <color name="colorPair">#BBEEFF</color>
     <color name="colorGroup">#EEBBFF</color>
     <color name="colorTrivial">#BDBDBD</color>
+    <color name="playerCombatant">#66C2A5</color>
+    <color name="monsterCombatant">#FC8D62</color>
 </resources>
