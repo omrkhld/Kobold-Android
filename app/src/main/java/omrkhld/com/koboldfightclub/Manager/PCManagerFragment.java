@@ -223,7 +223,13 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     }
 
     @Override
-    public void onFinishAddDialog(Player player) {
+    public void onFinishAddDialog(Player player, Player oldPlayer) {
+        if (oldPlayer != null) {
+            Player p = playersRealm.where(Player.class).equalTo("name", oldPlayer.getName()).findFirst();
+            playersRealm.beginTransaction();
+            p.deleteFromRealm();
+            playersRealm.commitTransaction();
+        }
         playersRealm.beginTransaction();
         playersRealm.copyToRealmOrUpdate(player);
         playersRealm.commitTransaction();

@@ -34,13 +34,11 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_height="wrap_content"
+            <ImageView
                 android:layout_width="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:text="Init: "/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_init_white"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -60,13 +58,11 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_height="wrap_content"
+            <ImageView
                 android:layout_width="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:text="HP: "/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_hp_white"/>
 
             <TextView
                 android:layout_height="wrap_content"

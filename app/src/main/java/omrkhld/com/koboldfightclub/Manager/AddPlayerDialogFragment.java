@@ -72,47 +72,6 @@ public class AddPlayerDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_add_player, container);
         ButterKnife.bind(this, view);
 
-        ArrayList<String> categories = new ArrayList<String>();
-        categories.add("New Party");
-        categories.add("New Player");
-        ArrayAdapter<String> addAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
-        addAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        /*addSpinner.setAdapter(addAdapter);
-        addSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) {
-                    createPartyButton.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
-                } else {
-                    layout.setVisibility(View.GONE);
-                    createPartyButton.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });*/
-
-        /*createPartyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                name = nameWrapper.getEditText().getText().toString();
-                partiesSet.add(name);
-                dismiss();
-            }
-        });
-
-        partyNames = getActivity().getSharedPreferences(getString(R.string.pref_party_names), 0);
-        partiesSet = partyNames.getStringSet("names", null);
-        if (partiesSet == null) {
-            partiesSet = new HashSet<String>() {{add("Party");}};
-        }
-        parties.addAll(partiesSet);
-        partyAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, parties);
-        partySpinner.setAdapter(partyAdapter);*/
-
         createPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +115,7 @@ public class AddPlayerDialogFragment extends DialogFragment {
                             player.setMed(row.get(1));
                             player.setHard(row.get(2));
                             player.setDeadly(row.get(3));
-                            sendBackResult(player);
+                            sendBackResult(player, p);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -203,14 +162,14 @@ public class AddPlayerDialogFragment extends DialogFragment {
     }
 
     public interface AddPlayerDialogListener {
-        void onFinishAddDialog(Player player);
+        void onFinishAddDialog(Player player, Player oldPlayer);
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult(Player player) {
+    public void sendBackResult(Player player, Player oldPlayer) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         AddPlayerDialogListener listener = (AddPlayerDialogListener) getTargetFragment();
-        listener.onFinishAddDialog(player);
+        listener.onFinishAddDialog(player, oldPlayer);
         dismiss();
     }
 }

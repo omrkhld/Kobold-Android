@@ -79,8 +79,8 @@ public class RunActivity extends AppCompatActivity implements EditPlayerDialogFr
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.home:
-                onBackPressed();
+            case android.R.id.home:
+                finish();
                 return true;
             case R.id.reroll:
                 rollInit();

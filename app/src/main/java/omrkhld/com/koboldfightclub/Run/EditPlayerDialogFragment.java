@@ -73,6 +73,7 @@ public class EditPlayerDialogFragment extends DialogFragment {
                 Random random = new Random();
                 int i = random.nextInt(20) + 1;
                 i += Integer.valueOf(originalC.initMod);
+                init = i;
                 initWrapper.getEditText().setText(Integer.toString(init));
             }
         });
