@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +44,6 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     public RealmConfiguration playersConfig;
     public Realm playersRealm;
     public RealmResults<Player> results;
-    public String selectedParty;
 
     public static PCManagerFragment newInstance() {
         PCManagerFragment fragment = new PCManagerFragment();
@@ -53,6 +53,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         xpThresholds = getActivity().getSharedPreferences(getString(R.string.pref_party_threshold), 0);
         playersConfig = new RealmConfiguration.Builder()
                 .name(getString(R.string.players_realm))
@@ -61,7 +62,6 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         playersRealm = Realm.getInstance(playersConfig);
         RealmQuery<Player> query = playersRealm.where(Player.class);
         results = query.findAllAsync();
-        selectedParty = "Party";
     }
 
     @Override
@@ -105,27 +105,8 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
                 results = playersRealm.where(Player.class).findAll().sort("name");
-                final Player p = new Player(results.get(position));
-                playersRealm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        results.deleteFromRealm(position);
-                    }
-                });
-                //updateList();
-                list.getAdapter().notifyItemRemoved(position);
-                Snackbar.make(getView(), "Undo delete?", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                playersRealm.beginTransaction();
-                                playersRealm.copyToRealm(p);
-                                playersRealm.commitTransaction();
-                                //updateList();
-                                list.getAdapter().notifyItemInserted(position);
-                            }
-                        })
-                        .show();
+                PCRealmAdapter adapter = (PCRealmAdapter) list.getAdapter();
+                adapter.pendingRemoval(position);
             }
 
             @Override
@@ -181,6 +162,18 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         return view;
     }
 
+    @Subscribe
+    public void deletePlayer(final PCRealmAdapter.DeleteEvent event) {
+        playersRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                results.deleteFromRealm(event.pos);
+            }
+        });
+        list.getAdapter().notifyItemRemoved(event.pos);
+        updateList();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -190,6 +183,7 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         playersRealm.close();
     }
 

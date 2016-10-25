@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +49,7 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.adjusted_xp) TextView adjustedText;
 
     private RealmConfiguration encConfig;
-    private Realm realm;
+    private Realm monstersRealm;
     public RealmResults<Monster> results;
     private SharedPreferences xpThresholds;
     private int numPlayers;
@@ -107,28 +106,9 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                results = realm.where(Monster.class).findAll().sort("name");
-                final Monster p = new Monster(results.get(position));
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        results.deleteFromRealm(position);
-                    }
-                });
-                list.getAdapter().notifyItemRemoved(position);
-                Snackbar.make(getView(), "Undo delete?", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                realm.beginTransaction();
-                                realm.copyToRealm(p);
-                                realm.commitTransaction();
-                                list.getAdapter().notifyItemInserted(position);
-                                results = realm.where(Monster.class).findAll().sort("name");
-                                checkEmpty(results);
-                            }
-                        })
-                        .show();
+                results = monstersRealm.where(Monster.class).findAll().sort("name");
+                EncManagerRealmAdapter adapter = (EncManagerRealmAdapter) list.getAdapter();
+                adapter.pendingRemoval(position);
 
                 checkEmpty(results);
                 adjustExp(results);
@@ -192,23 +172,34 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
                 .name(getString(R.string.encbuild_realm))
                 .deleteRealmIfMigrationNeeded()
                 .build();
-        realm = Realm.getInstance(encConfig);
+        monstersRealm = Realm.getInstance(encConfig);
     }
 
     @Subscribe
     public void addToRealm(SelectedListFragment.SubmitEvent event) {
         RealmList<Monster> monsters = event.monsters;
         Log.e(TAG, "Size: " + monsters.size());
-        realm.beginTransaction();
+        monstersRealm.beginTransaction();
         for (Monster m : monsters) {
-            realm.copyToRealm(m);
+            monstersRealm.copyToRealm(m);
         }
-        realm.commitTransaction();
+        monstersRealm.commitTransaction();
     }
 
     @Subscribe
     public void updateDifficulty(PCManagerFragment.UpdateEvent event) {
         updateList();
+    }
+
+    @Subscribe
+    public void deleteMonster(final EncManagerRealmAdapter.DeleteEvent event) {
+        monstersRealm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        results.deleteFromRealm(event.pos);
+                    }
+                });
+        list.getAdapter().notifyItemRemoved(event.pos);
     }
 
     @Override
@@ -219,13 +210,13 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroy() {
-        realm.close();
+        monstersRealm.close();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
     public void updateList() {
-        RealmQuery<Monster> query = realm.where(Monster.class);
+        RealmQuery<Monster> query = monstersRealm.where(Monster.class);
         results = query.findAll().sort("name");
         list.setAdapter(new EncManagerRealmAdapter((AppCompatActivity)getActivity(), results));
         list.getAdapter().notifyDataSetChanged();
