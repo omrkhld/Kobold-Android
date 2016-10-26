@@ -156,6 +156,8 @@ public class MonsterListFragment extends Fragment implements FilterDialogFragmen
             case R.id.filter:
                 showFilterDialog();
                 return true;
+            case R.id.custom:
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

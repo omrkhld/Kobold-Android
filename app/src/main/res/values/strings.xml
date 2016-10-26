@@ -4,6 +4,8 @@
     <string name="drawer_close">Menu closed</string>
 
     <string name="title_activity_monster_list">MonsterListActivity</string>
+    <string name="title_activity_run">RunActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="fragment_encbuilder">Bestiary</string>
     <string name="fragment_pcmanager">Player Manager</string>

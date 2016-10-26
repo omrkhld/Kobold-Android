@@ -7,9 +7,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -25,6 +30,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmQuery;
@@ -50,13 +56,14 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
 
     private RealmConfiguration encConfig;
     private Realm monstersRealm;
-    public RealmResults<Monster> results;
+    private RealmResults<Monster> results;
+    private RealmChangeListener changeListener;
     private SharedPreferences xpThresholds;
     private int numPlayers;
+    public EncRealmAdapter adapter;
 
     public static EncManagerFragment newInstance() {
-        EncManagerFragment fragment = new EncManagerFragment();
-        return fragment;
+        return new EncManagerFragment();
     }
 
     @Override
@@ -64,7 +71,6 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         xpThresholds = getActivity().getSharedPreferences(getString(R.string.pref_party_threshold), 0);
-        numPlayers = xpThresholds.getInt("numPlayers", 4);
     }
 
     @Override
@@ -72,18 +78,25 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_encmanager, container, false);
         ButterKnife.bind(this, view);
-        initRealm();
+        encConfig = new RealmConfiguration.Builder()
+                .name(getString(R.string.encbuild_realm))
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        monstersRealm = Realm.getInstance(encConfig);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MonsterListActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        RealmQuery<Monster> query = monstersRealm.where(Monster.class);
+        results = query.findAll();
+        adapter = new EncRealmAdapter((AppCompatActivity)getActivity(), results);
+        list.setAdapter(adapter);
         list.addItemDecoration(new DividerItemDecoration(getContext()));
-        list.setAdapter(new EncManagerRealmAdapter((AppCompatActivity) getActivity(), results));
+
+        changeListener = new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm monstersRealm) {
+                list.getAdapter().notifyDataSetChanged();
+            }
+        };
+        monstersRealm.addChangeListener(changeListener);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             Drawable background;
@@ -106,12 +119,8 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                results = monstersRealm.where(Monster.class).findAll().sort("name");
-                EncManagerRealmAdapter adapter = (EncManagerRealmAdapter) list.getAdapter();
                 adapter.pendingRemoval(position);
-
-                checkEmpty(results);
-                adjustExp(results);
+                updateList();
             }
 
             @Override
@@ -164,21 +173,20 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(list);
 
-        return view;
-    }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MonsterListActivity.class);
+                startActivity(intent);
+            }
+        });
 
-    public void initRealm() {
-        encConfig = new RealmConfiguration.Builder()
-                .name(getString(R.string.encbuild_realm))
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        monstersRealm = Realm.getInstance(encConfig);
+        return view;
     }
 
     @Subscribe
     public void addToRealm(SelectedListFragment.SubmitEvent event) {
         RealmList<Monster> monsters = event.monsters;
-        Log.e(TAG, "Size: " + monsters.size());
         monstersRealm.beginTransaction();
         for (Monster m : monsters) {
             monstersRealm.copyToRealm(m);
@@ -192,14 +200,13 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
     }
 
     @Subscribe
-    public void deleteMonster(final EncManagerRealmAdapter.DeleteEvent event) {
+    public void deleteMonster(final EncRealmAdapter.DeleteEvent event) {
         monstersRealm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        results.deleteFromRealm(event.pos);
-                    }
-                });
-        list.getAdapter().notifyItemRemoved(event.pos);
+            @Override
+            public void execute(Realm realm) {
+                results.deleteFromRealm(event.pos);
+            }
+        });
     }
 
     @Override
@@ -210,16 +217,13 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroy() {
-        monstersRealm.close();
         EventBus.getDefault().unregister(this);
+        monstersRealm.removeAllChangeListeners();
+        monstersRealm.close();
         super.onDestroy();
     }
 
     public void updateList() {
-        RealmQuery<Monster> query = monstersRealm.where(Monster.class);
-        results = query.findAll().sort("name");
-        list.setAdapter(new EncManagerRealmAdapter((AppCompatActivity)getActivity(), results));
-        list.getAdapter().notifyDataSetChanged();
         checkEmpty(results);
         adjustExp(results);
     }
@@ -234,9 +238,10 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    @UiThread
     public void adjustExp(RealmResults<Monster> r) {
         int totalExp = 0;
-        double adjustedExp = 0;
+        double adjustedExp;
         for (Monster m : r) {
             totalExp += m.getExp();
         }
@@ -253,6 +258,8 @@ public class EncManagerFragment extends android.support.v4.app.Fragment {
         } else {
             adjustedExp = totalExp;
         }
+
+        numPlayers = xpThresholds.getInt("numPlayers", 4);
 
         if (numPlayers < 3) {
             if (r.size() == 1) {

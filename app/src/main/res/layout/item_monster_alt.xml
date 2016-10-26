@@ -23,7 +23,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="56dp"
             android:textColor="@android:color/black"
             android:text="CR"
             android:textSize="16sp"
@@ -32,7 +31,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="56dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_below="@id/monster_name">
@@ -58,16 +56,6 @@
                 android:text="Source"
                 android:id="@+id/monster_src"/>
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:src="@drawable/circle"
-            android:id="@+id/monster_difficulty"/>
     </RelativeLayout>
 
     <Button

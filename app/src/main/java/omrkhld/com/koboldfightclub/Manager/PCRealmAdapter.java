@@ -29,10 +29,11 @@ import omrkhld.com.koboldfightclub.R;
  */
 
 public class PCRealmAdapter extends RealmRecyclerViewAdapter<Player, PCRealmAdapter.ViewHolder> {
+
     private final String TAG = "PCAdapter";
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
     private Handler handler = new Handler(); // handler for running delayed runnables
-    HashMap<Player, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
+    private HashMap<Player, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
     private final AppCompatActivity activity;
     private RealmList<Player> itemsPendingRemoval;
 
@@ -111,6 +112,7 @@ public class PCRealmAdapter extends RealmRecyclerViewAdapter<Player, PCRealmAdap
 
     public void remove(int position) {
         Player obj = getData().get(position);
+        pendingRunnables.remove(obj);
         if (itemsPendingRemoval.contains(obj)) {
             itemsPendingRemoval.remove(obj);
         }

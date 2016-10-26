@@ -4,4 +4,7 @@
     <item android:id="@+id/run"
         android:title="Run"
         app:showAsAction="always" />
+
+    <item android:id="@+id/settings"
+        android:title="Settings" />
 </menu>

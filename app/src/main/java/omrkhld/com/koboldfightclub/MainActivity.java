@@ -82,8 +82,12 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.run:
-                Intent intent = new Intent(this, RunActivity.class);
-                startActivity(intent);
+                Intent runIntent = new Intent(this, RunActivity.class);
+                startActivity(runIntent);
+                return true;
+            case R.id.settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(pager.getCurrentItem() != 0) {
+        if (pager.getCurrentItem() != 0) {
             pager.setCurrentItem(0, true);
         } else {
             super.onBackPressed();

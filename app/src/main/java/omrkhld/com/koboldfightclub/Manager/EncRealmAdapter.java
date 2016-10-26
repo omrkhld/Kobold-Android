@@ -31,37 +31,29 @@ import omrkhld.com.koboldfightclub.R;
  * Created by Omar on 6/10/2016.
  */
 
-public class EncManagerRealmAdapter extends RealmRecyclerViewAdapter<Monster, EncManagerRealmAdapter.ViewHolder> {
+public class EncRealmAdapter extends RealmRecyclerViewAdapter<Monster, EncRealmAdapter.ViewHolder> {
 
     public static final String TAG = "EncounterAdapter";
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
     private Handler handler = new Handler(); // handler for running delayed runnables
-    HashMap<Monster, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
+    private HashMap<Monster, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
     private final AppCompatActivity activity;
     private RealmList<Monster> itemsPendingRemoval;
-    private SharedPreferences xpThresholds;
-    public int numPlayers, easy, med, hard, deadly;
 
-    public EncManagerRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
+    public EncRealmAdapter(AppCompatActivity activity, OrderedRealmCollection<Monster> data) {
         super(activity, data, true);
         this.activity = activity;
         itemsPendingRemoval = new RealmList<>();
-        xpThresholds = context.getSharedPreferences(context.getString(R.string.pref_party_threshold), 0);
-        numPlayers = xpThresholds.getInt("numPlayers", 4);
-        easy = xpThresholds.getInt("easy", 25);
-        med = xpThresholds.getInt("med", 50);
-        hard = xpThresholds.getInt("hard", 75);
-        deadly = xpThresholds.getInt("deadly", 100);
     }
 
     @Override
-    public EncManagerRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EncRealmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monster_alt, parent, false);
-        return new EncManagerRealmAdapter.ViewHolder(view);
+        return new EncRealmAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final EncManagerRealmAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final EncRealmAdapter.ViewHolder holder, int position) {
         final Monster obj = getData().get(position);
 
         if (itemsPendingRemoval.contains(obj)) {
@@ -103,42 +95,6 @@ public class EncManagerRealmAdapter extends RealmRecyclerViewAdapter<Monster, En
             holder.alignment.setText(obj.getAlignment());
             holder.type.setText(obj.getType());
             holder.src.setText(obj.getSource());
-
-            double tempExp = obj.getExp();
-            GradientDrawable bgCircle = (GradientDrawable) holder.difficulty.getDrawable();
-            if (tempExp >= deadly) {
-                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorDeadly));
-            } else if (tempExp >= hard) {
-                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorHard));
-            } else if (tempExp >= med) {
-                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorMed));
-            } else if (tempExp >= easy) {
-                bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorEasy));
-            } else if (numPlayers < 3) {
-                if (tempExp*2*2 >= med) {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
-                } else if (tempExp*4*2.5 >= med) {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
-                } else {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
-                }
-            } else if (numPlayers > 6) {
-                if (tempExp*2 >= med) {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
-                } else if (tempExp*4*1.5 >= med) {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
-                } else {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
-                }
-            } else {
-                if (tempExp*2*1.5 >= med) {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorPair));
-                } else if (tempExp*4*2 >= med) {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorGroup));
-                } else {
-                    bgCircle.setColor(ContextCompat.getColor(activity, R.color.colorTrivial));
-                }
-            }
         }
     }
 
@@ -162,6 +118,7 @@ public class EncManagerRealmAdapter extends RealmRecyclerViewAdapter<Monster, En
 
     public void remove(int position) {
         Monster obj = getData().get(position);
+        pendingRunnables.remove(obj);
         if (itemsPendingRemoval.contains(obj)) {
             itemsPendingRemoval.remove(obj);
         }
@@ -188,7 +145,6 @@ public class EncManagerRealmAdapter extends RealmRecyclerViewAdapter<Monster, En
         @BindView(R.id.monster_type) TextView type;
         @BindView(R.id.monster_alignment) TextView alignment;
         @BindView(R.id.monster_src) TextView src;
-        @BindView(R.id.monster_difficulty) ImageView difficulty;
 
         public ViewHolder(View view) {
             super(view);

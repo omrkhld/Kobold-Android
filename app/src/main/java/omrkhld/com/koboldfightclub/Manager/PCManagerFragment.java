@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -40,14 +41,14 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     @BindView(R.id.player_recycler_view) RecyclerView list;
     @BindView(R.id.pc_fab) FloatingActionButton fab;
 
-    public SharedPreferences xpThresholds;
-    public RealmConfiguration playersConfig;
-    public Realm playersRealm;
-    public RealmResults<Player> results;
+    private SharedPreferences xpThresholds;
+    private RealmConfiguration playersConfig;
+    private Realm playersRealm;
+    private RealmResults<Player> results;
+    private RealmChangeListener changeListener;
 
     public static PCManagerFragment newInstance() {
-        PCManagerFragment fragment = new PCManagerFragment();
-        return fragment;
+        return new PCManagerFragment();
     }
 
     @Override
@@ -55,13 +56,6 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         xpThresholds = getActivity().getSharedPreferences(getString(R.string.pref_party_threshold), 0);
-        playersConfig = new RealmConfiguration.Builder()
-                .name(getString(R.string.players_realm))
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        playersRealm = Realm.getInstance(playersConfig);
-        RealmQuery<Player> query = playersRealm.where(Player.class);
-        results = query.findAllAsync();
     }
 
     @Override
@@ -69,19 +63,25 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         View view = inflater.inflate(R.layout.fragment_pcmanager, container, false);
         ButterKnife.bind(this, view);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                AddPlayerDialogFragment dialog = AddPlayerDialogFragment.newInstance("Add Player", null);
-                dialog.setTargetFragment(PCManagerFragment.this, 300);
-                dialog.show(fm, "dialog_add_player");
-                updateList();
-            }
-        });
+        playersConfig = new RealmConfiguration.Builder()
+                .name(getString(R.string.players_realm))
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        playersRealm = Realm.getInstance(playersConfig);
 
+        RealmQuery<Player> query = playersRealm.where(Player.class);
+        results = query.findAll();
         list.addItemDecoration(new DividerItemDecoration(getContext()));
         list.setAdapter(new PCRealmAdapter((AppCompatActivity) getActivity(), results));
+
+        changeListener = new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm playersRealm) {
+                list.getAdapter().notifyDataSetChanged();
+                updateList();
+            }
+        };
+        playersRealm.addChangeListener(changeListener);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             Drawable background;
@@ -104,7 +104,6 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                results = playersRealm.where(Player.class).findAll().sort("name");
                 PCRealmAdapter adapter = (PCRealmAdapter) list.getAdapter();
                 adapter.pendingRemoval(position);
             }
@@ -159,6 +158,16 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(list);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                AddPlayerDialogFragment dialog = AddPlayerDialogFragment.newInstance("Add Player", null);
+                dialog.setTargetFragment(PCManagerFragment.this, 300);
+                dialog.show(fm, "dialog_add_player");
+            }
+        });
+
         return view;
     }
 
@@ -170,8 +179,6 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
                 results.deleteFromRealm(event.pos);
             }
         });
-        list.getAdapter().notifyItemRemoved(event.pos);
-        updateList();
     }
 
     @Override
@@ -184,15 +191,12 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        playersRealm.removeAllChangeListeners();
         playersRealm.close();
     }
 
     public void updateList() {
         int numPlayers = 1, easy = 0, med = 0, hard = 0, deadly = 0;
-        RealmQuery<Player> query = playersRealm.where(Player.class);
-        results = query.findAll().sort("name");
-        list.setAdapter(new PCRealmAdapter((AppCompatActivity) getActivity(), results));
-        list.getAdapter().notifyDataSetChanged();
 
         if (results.isEmpty()) {
             easy = 25; med = 50; hard = 75; deadly = 100;
@@ -227,7 +231,6 @@ public class PCManagerFragment extends Fragment implements AddPlayerDialogFragme
         playersRealm.beginTransaction();
         playersRealm.copyToRealmOrUpdate(player);
         playersRealm.commitTransaction();
-        updateList();
     }
 
     //This is to update the Difficulty color in Encounter Manager page
