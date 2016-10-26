@@ -13,18 +13,13 @@ With the app, you can:
 The above features will continue to be refined as the app undergoes thorough user testing (mainly by myself when I use it during my games). More features will be considered.
 
 ## How to Work with the Source
-Currently the source code is a mess and is probably only comprehensible by me. I will endeavor to make it more develop-friendly once the basic functionality of the app has been fully established. Until then, do bear with me as I continue pushing uncommented code.
+Currently the source code is a mess and is probably only comprehensible by me. I will endeavor to make it more developer-friendly once the basic functionality of the app has been fully established. Until then, do bear with me as I continue pushing uncommented code.
 
 Since this is an open source project, do feel free to submit a pull request and assist in reporting and fixing bugs that you might see along the way.
 
 ## To-Do
 Here's a list of things that are currently in the works:
-- [ ] Allow user to sort and filter the list of monsters based on various options as seen on Kobold.club
-- [ ] Design and implement the Encounter manager
-- [ ] Design and implement the Run encounter
-  - [ ] "Dice-roller" to roll for initiative
-  - [ ] Save encounter to database
-  - [ ] HP counter (remove monster when HP <= 0)
+- [ ] HP counter (remove monster when HP <= 0)
 - [ ] Allow user to build multiple encounters and multiple parties
 - [ ] Possibly allow creation of custom monsters (Sub-section of monster list for homebrewed creatures?)
 - [ ] Include images for monsters? (Low chance of viability)
@@ -34,6 +29,7 @@ This app was created with the assistance of the following amazing libraries (in 
 * [Realm](https://realm.io/)
 * [Butter Knife](http://jakewharton.github.io/butterknife/)
 * [Gson](https://github.com/google/gson)
+* [EventBus](https://github.com/greenrobot/EventBus)
 
 ## License
 > (c) 2016 Omar Khalid
